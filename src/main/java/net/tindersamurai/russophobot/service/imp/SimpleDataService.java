@@ -43,7 +43,7 @@ public class SimpleDataService implements IDataService {
 			val subscriber = new Subscriber(id, chatId, username,false);
 			val token = new Token(); {
 				token.setId(new Helper().genTokenId());
-				token.setUser(username);
+				token.setUser(id);
 				token.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME));
 			}
 
@@ -63,13 +63,13 @@ public class SimpleDataService implements IDataService {
 
 
 	@Override @Transactional
-	public boolean unSubscribeUser(String username) {
+	public boolean unSubscribeUser(int id) {
 		try {
-			subscriberRepository.deleteById(username);
-			log.debug("unsubscribed: {}", username);
+			subscriberRepository.deleteById(id);
+			log.debug("unsubscribed: {}", id);
 			return true;
 		} catch (Exception e) {
-			log.error("unSubscribeUser: " + username, e);
+			log.error("unSubscribeUser: " + id, e);
 			return false;
 		}
 	}
