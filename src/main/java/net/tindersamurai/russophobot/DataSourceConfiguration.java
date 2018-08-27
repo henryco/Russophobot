@@ -13,7 +13,7 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
-@PropertySource(value = "classpath:bot.properties")
+@PropertySource(value = "classpath:/bot.properties")
 public class DataSourceConfiguration {
 
 	private @Value("${redis.host}") String redisHost;
