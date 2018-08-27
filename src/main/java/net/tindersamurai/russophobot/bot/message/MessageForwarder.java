@@ -38,7 +38,6 @@ public class MessageForwarder extends AMessageProcessor {
 		this.repository = repository;
 
 		log.debug("MessageForwarder initialization");
-		template.delete(template.keys("*"));
 	}
 
 	@Override
