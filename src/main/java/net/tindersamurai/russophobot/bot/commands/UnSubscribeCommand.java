@@ -36,7 +36,7 @@ public class UnSubscribeCommand extends ABotCommand {
 	protected void onCommand(Update update, AbsSender sender) {
 		val from = update.getMessage().getFrom();
 
-		if (dataService.unSubscribeUser(from.getUserName())) {
+		if (dataService.unSubscribeUser(from.getId())) {
 			try {
 				sender.execute(new SendMessage()
 						.setChatId(update.getMessage().getChatId())

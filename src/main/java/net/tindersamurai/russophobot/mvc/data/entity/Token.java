@@ -34,6 +34,6 @@ public class Token {
 			name = "user",
 			nullable = false,
 			updatable = false
-	) String user;
+	) int user;
 
 }
