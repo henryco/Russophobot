@@ -1,10 +1,12 @@
 package net.tindersamurai.russophobot;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
@@ -19,11 +21,7 @@ public class DataSourceConfiguration {
 
 	@Bean("JCF")
 	public JedisConnectionFactory jedisConnectionFactory() {
-		JedisConnectionFactory factory = new JedisConnectionFactory();
-		factory.setHostName(redisHost);
-		factory.setPort(redisPort);
-		factory.setUsePool(true);
-		return factory;
+		return new JedisConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
 	}
 
 	@Bean
@@ -36,8 +34,8 @@ public class DataSourceConfiguration {
 		final RedisTemplate<String, Object> template = new RedisTemplate<>();
 		template.setConnectionFactory(connectionFactory);
 		template.setKeySerializer(new StringRedisSerializer());
-		template.setHashValueSerializer(new GenericToStringSerializer<>(Object.class) );
-		template.setValueSerializer(new GenericToStringSerializer<>(Object.class) );
+		template.setHashValueSerializer(new GenericToStringSerializer<>(Object.class));
+		template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
 		return template;
 	}
 

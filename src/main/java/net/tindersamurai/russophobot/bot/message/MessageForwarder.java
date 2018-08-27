@@ -4,21 +4,34 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.tindersamurai.russophobot.mvc.data.repository.SubscriberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ForwardMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.text.NumberFormat;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Component @Slf4j
+@PropertySource(value = "classpath:bot.properties", encoding = "UTF-8")
 public class MessageForwarder extends AMessageProcessor {
+
+	private static final long MAX_TIMEOUT = 600000; // ms == 10 min
+	private static final long MIN_TIMEOUT = 500; // ms
 
 	private final RedisTemplate<String, Object> template;
 	private final SubscriberRepository repository;
+
+	@Value("${timeout.message}")
+	private String timeoutMsg;
+
 
 	@Autowired
 	public MessageForwarder(
@@ -27,10 +40,13 @@ public class MessageForwarder extends AMessageProcessor {
 	) {
 		this.template = template;
 		this.repository = repository;
+
+		log.debug("MessageForwarder initialization");
+		template.delete(template.keys("*"));
 	}
 
 	@Override
-	protected void onMessage(Update update, AbsSender sender) throws TelegramApiException {
+	protected boolean onMessage(Update update, AbsSender sender) throws Exception {
 
 		val message = update.getMessage();
 		val userName = message.getFrom().getUserName();
@@ -46,9 +62,12 @@ public class MessageForwarder extends AMessageProcessor {
 //		https://redis.io/commands/expire
 
 		val timeout = testTimeout(message);
-		if (timeout > 0) {
+		if (timeout > MIN_TIMEOUT) {
 			log.debug("TIMEOUT limit: {}ms, user: {}", timeout, userName + " | " + id);
-			return;
+			sender.execute(new SendMessage()
+					.setChatId(update.getMessage().getChatId())
+					.setText(timeoutMsg + (((float) timeout) / 1000f) + " sec"));
+			return false;
 		}
 
 		for (val subscriber : repository.getAllByActiveTrue()) {
@@ -68,14 +87,10 @@ public class MessageForwarder extends AMessageProcessor {
 
 			log.debug("Message forwarded: {}", forwardMessage);
 		}
+		return true;
 	}
 
-
-
-	private static final long MIN_TIMEOUT = 50; // ms
-	private static final long MAX_TIMEOUT = 600000; // ms == 10 min
-
-	private long testTimeout(Message message) {
+	private long testTimeout(Message message) throws Exception {
 
 		val fromHash = message.getFrom().hashCode();
 		val chatHash = message.getChatId().hashCode();
@@ -88,15 +103,24 @@ public class MessageForwarder extends AMessageProcessor {
 		val keyExists = template.hasKey(key);
 		long timeout = 0;
 
-		if (keyExists != null && !keyExists) timeout = MIN_TIMEOUT;
+		boolean limit = false;
+
+		if (keyExists != null && !keyExists)
+			timeout = MIN_TIMEOUT;
 
 		else {
-			Long value = (Long) template.opsForValue().get(key);
-			if (value != null) timeout = Math.max(value * 5, MAX_TIMEOUT);
+			val v = template.opsForValue().get(key);
+			if (v != null) {
+				val lastVal = Long.parseLong(v.toString());
+				if (lastVal >= MAX_TIMEOUT) limit = true;
+				timeout = Math.min(lastVal * 5, MAX_TIMEOUT);
+			}
 		}
 
 		template.opsForValue().set(key, timeout);
 		template.expire(key, timeout, TimeUnit.MILLISECONDS);
+
+		if (limit) throw new RuntimeException("TIMEOUT BAN EXCEEDED, USER IGNORED");
 
 		return timeout;
 	}

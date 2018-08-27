@@ -32,7 +32,7 @@ public class ThankYouReply implements IBotReply {
 	}
 
 	@Override
-	public void reply(Update update, AbsSender absSender) {
+	public boolean reply(Update update, AbsSender absSender) {
 		if (update.hasMessage() && !update.getMessage().isCommand()) {
 			log.debug("Reply to: {}", update.getMessage().getFrom().getUserName());
 			val message = new SendMessage()
@@ -40,10 +40,13 @@ public class ThankYouReply implements IBotReply {
 					.setText(rollMessage());
 			try {
 				absSender.execute(message);
+				return true;
 			} catch (TelegramApiException e) {
 				log.error("Cannot send reply message", e);
+				return true;
 			}
 		}
+		return true;
 	}
 
 	private String rollMessage() {

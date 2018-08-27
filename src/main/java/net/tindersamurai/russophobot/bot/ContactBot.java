@@ -35,8 +35,8 @@ public class ContactBot extends TelegramLongPollingBot {
 	@Override
 	public void onUpdateReceived(Update update) {
 		log.debug("Update user: {}", update.getUpdateId());
-		messageProcessor.process(update, this);
-		reply.process(update, this);
+		if (!messageProcessor.process(update, this)) return;
+		if (!reply.process(update, this)) return;
 		for (ABotCommand command : commands) {
 			command.process(update, this);
 		}

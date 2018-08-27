@@ -12,13 +12,14 @@ public abstract class ABotCommand implements IBotLogic {
 	protected abstract void onCommand(Update update, AbsSender sender);
 	protected abstract String getCommandName();
 
-	public final void process(Update update, AbsSender sender) {
+	public final boolean process(Update update, AbsSender sender) {
 		if (update.hasMessage() && update.getMessage().isCommand()) {
 			val command = update.getMessage().getText();
 			log.debug("Command: {}, Found: {}", getCommandName(), command);
 			if (check(getCommandName(), command))
 				onCommand(update, sender);
 		}
+		return true;
 	}
 
 	private static boolean check(String command, String actual) {
