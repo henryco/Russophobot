@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import java.util.concurrent.TimeUnit;
 
 @Component @Slf4j
-@PropertySource(value = "classpath:bot.properties", encoding = "UTF-8")
+@PropertySource(value = "classpath:/bot.properties", encoding = "UTF-8")
 public class MessageForwarder extends AMessageProcessor {
 
 	private static final long MAX_TIMEOUT = 600000; // ms == 10 min
@@ -61,7 +61,7 @@ public class MessageForwarder extends AMessageProcessor {
 			log.debug("TIMEOUT limit: {}ms, user: {}", timeout, userName + " | " + id);
 			sender.execute(new SendMessage()
 					.setChatId(update.getMessage().getChatId())
-					.setText(timeoutMsg + (((float) timeout) / 1000f) + " sec"));
+					.setText(timeoutMsg + " " + (((float) timeout) / 1000f) + " sec"));
 			return false;
 		}
 

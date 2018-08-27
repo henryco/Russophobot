@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@Component @Slf4j @PropertySource("classpath:bot.properties")
+@Component @Slf4j @PropertySource("classpath:/bot.properties")
 public class ContactBot extends TelegramLongPollingBot {
 
 	@Value("${token}") private String token;

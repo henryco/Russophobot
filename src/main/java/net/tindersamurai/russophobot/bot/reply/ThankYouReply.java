@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Random;
 
 @Component @Slf4j
-@PropertySource(value = "classpath:bot.properties", encoding = "UTF-8")
+@PropertySource(value = "classpath:/bot.properties", encoding = "UTF-8")
 public class ThankYouReply implements IBotReply {
 
 	private final String[] messages;

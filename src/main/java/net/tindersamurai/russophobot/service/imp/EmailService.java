@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@Component @Slf4j @PropertySource(value="classpath:bot.properties", encoding = "UTF-8")
+@Component @Slf4j @PropertySource(value="classpath:/bot.properties", encoding = "UTF-8")
 public class EmailService implements IEmailService {
 
 	private final JavaMailSender mailSender;
