@@ -39,7 +39,7 @@ public class MessageForwarder extends AMessageProcessor {
 //		https://stackoverflow.com/questions/34893279/spring-data-redis-expire-key
 //		https://www.baeldung.com/spring-data-redis-tutorial
 //		https://redis.io/commands/expire
-		
+
 		for (val subscriber : repository.getAllByActiveTrue()) {
 			if (subscriber.getId().equals(userName)) {
 				log.debug("Message ignored: {}", update.getMessage());
