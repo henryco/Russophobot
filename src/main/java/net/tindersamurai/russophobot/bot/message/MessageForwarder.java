@@ -13,10 +13,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.text.NumberFormat;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Component @Slf4j
@@ -90,7 +86,7 @@ public class MessageForwarder extends AMessageProcessor {
 		return true;
 	}
 
-	private long testTimeout(Message message) throws Exception {
+	private long testTimeout(Message message) throws RuntimeException {
 
 		val fromHash = message.getFrom().hashCode();
 		val chatHash = message.getChatId().hashCode();
