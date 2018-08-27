@@ -37,7 +37,8 @@ public class SubscribeCommand extends ABotCommand {
 		val chatId = update.getMessage().getChatId();
 
 		val userName = from.getUserName();
-		val success = dataService.subscribeUser(userName, chatId);
+		val id = from.getId();
+		val success = dataService.subscribeUser(id, userName, chatId);
 
 		if (success) {
 			val message = new SendMessage()

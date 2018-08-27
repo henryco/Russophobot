@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ForwardMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.concurrent.TimeUnit;
 
 @Component @Slf4j
 public class MessageForwarder extends AMessageProcessor {
@@ -29,9 +32,11 @@ public class MessageForwarder extends AMessageProcessor {
 	@Override
 	protected void onMessage(Update update, AbsSender sender) throws TelegramApiException {
 
-		val userName = update.getMessage().getFrom().getUserName();
-		val messageChatId = update.getMessage().getChatId();
-		val messageId = update.getMessage().getMessageId();
+		val message = update.getMessage();
+		val userName = message.getFrom().getUserName();
+		val id = message.getFrom().getId();
+		val messageChatId = message.getChatId();
+		val messageId = message.getMessageId();
 
 //		https://dzone.com/articles/using-redis-spring
 //		https://memorynotfound.com/spring-redis-application-configuration-example/
@@ -40,9 +45,15 @@ public class MessageForwarder extends AMessageProcessor {
 //		https://www.baeldung.com/spring-data-redis-tutorial
 //		https://redis.io/commands/expire
 
+		val timeout = testTimeout(message);
+		if (timeout > 0) {
+			log.debug("TIMEOUT limit: {}ms, user: {}", timeout, userName + " | " + id);
+			return;
+		}
+
 		for (val subscriber : repository.getAllByActiveTrue()) {
-			if (subscriber.getId().equals(userName)) {
-				log.debug("Message ignored: {}", update.getMessage());
+			if (subscriber.getId() == id) {
+				log.debug("Message ignored: {}", userName + " | " + id);
 				continue;
 			}
 
@@ -58,4 +69,36 @@ public class MessageForwarder extends AMessageProcessor {
 			log.debug("Message forwarded: {}", forwardMessage);
 		}
 	}
+
+
+
+	private static final long MIN_TIMEOUT = 50; // ms
+	private static final long MAX_TIMEOUT = 600000; // ms == 10 min
+
+	private long testTimeout(Message message) {
+
+		val fromHash = message.getFrom().hashCode();
+		val chatHash = message.getChatId().hashCode();
+
+		val hash = fromHash | chatHash;
+		val key = hash + ":" + message.getChatId();
+
+		log.debug("TTKEY: {}", key);
+
+		val keyExists = template.hasKey(key);
+		long timeout = 0;
+
+		if (keyExists != null && !keyExists) timeout = MIN_TIMEOUT;
+
+		else {
+			Long value = (Long) template.opsForValue().get(key);
+			if (value != null) timeout = Math.max(value * 5, MAX_TIMEOUT);
+		}
+
+		template.opsForValue().set(key, timeout);
+		template.expire(key, timeout, TimeUnit.MILLISECONDS);
+
+		return timeout;
+	}
+
 }

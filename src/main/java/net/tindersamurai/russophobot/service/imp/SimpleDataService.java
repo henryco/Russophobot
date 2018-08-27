@@ -37,10 +37,10 @@ public class SimpleDataService implements IDataService {
 	}
 
 	@Override @Transactional
-	public boolean subscribeUser(String username, long chatId) {
+	public boolean subscribeUser(int id, String username, long chatId) {
 
 		try {
-			val subscriber = new Subscriber(username, chatId,false);
+			val subscriber = new Subscriber(id, chatId, username,false);
 			val token = new Token(); {
 				token.setId(new Helper().genTokenId());
 				token.setUser(username);
