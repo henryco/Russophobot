@@ -20,7 +20,7 @@ public class EmailService implements IEmailService {
 	@Value("${confirm.address}")
 	private String botMailAddress;
 
-	@Value("${сonfirm.email}")
+	@Value("${confirm.email}")
 	private String adminMail;
 
 	@Autowired

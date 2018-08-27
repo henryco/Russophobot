@@ -34,6 +34,7 @@ public class ThankYouReply implements IBotReply {
 	@Override
 	public void reply(Update update, AbsSender absSender) {
 		if (update.hasMessage() && !update.getMessage().isCommand()) {
+			log.debug("Reply to: {}", update.getMessage().getFrom().getUserName());
 			val message = new SendMessage()
 					.setChatId(update.getMessage().getChatId())
 					.setText(rollMessage());

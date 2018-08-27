@@ -17,7 +17,7 @@ public class Subscriber {
 			nullable = false,
 			updatable = false,
 			unique = true
-	) String id;
+	) int id;
 
 
 	private @Column(
@@ -26,6 +26,11 @@ public class Subscriber {
 			unique = true
 	) long chatId;
 
+
+	private @Column(
+			name = "username",
+			unique = true
+	) String username;
 
 	private @Column(
 			name = "active",
