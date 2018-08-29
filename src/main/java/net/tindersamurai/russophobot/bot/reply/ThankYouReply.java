@@ -2,7 +2,9 @@ package net.tindersamurai.russophobot.bot.reply;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -18,13 +20,18 @@ import java.util.Random;
 @PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class ThankYouReply implements IBotReply {
 
+	private final IDataService dataService;
 	private final String[] messages;
 	private final int numb;
 
+	@Value("${reply.subscriber}")
+	private String subscriberResponse;
+
 	@Autowired
-	public ThankYouReply(Environment env) {
+	public ThankYouReply(IDataService dataService, Environment env) {
 		this.numb = Integer.parseInt(Objects.requireNonNull(env.getProperty("reply.numb")));
 		this.messages = new String[numb];
+		this.dataService = dataService;
 		for (int i = 0; i < numb; i++) {
 			val k = i + 1;
 			messages[i] = env.getProperty("reply." + k);
@@ -34,10 +41,14 @@ public class ThankYouReply implements IBotReply {
 	@Override
 	public boolean reply(Update update, AbsSender absSender) {
 		if (update.hasMessage() && !update.getMessage().isCommand()) {
+
+			val id = update.getMessage().getFrom().getId();
+			val response = dataService.subscriberExists(id) ? subscriberResponse : rollMessage();
+
 			log.debug("Reply to: {}", update.getMessage().getFrom().getUserName());
 			val message = new SendMessage()
 					.setChatId(update.getMessage().getChatId())
-					.setText(rollMessage());
+					.setText(response);
 			try {
 				absSender.execute(message);
 				return true;
