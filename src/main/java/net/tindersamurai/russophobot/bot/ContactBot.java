@@ -2,10 +2,13 @@ package net.tindersamurai.russophobot.bot;
 
 import lombok.extern.slf4j.Slf4j;
 import net.tindersamurai.russophobot.bot.commands.ABotCommand;
+import net.tindersamurai.russophobot.bot.event.events.MessageEvent;
+import net.tindersamurai.russophobot.bot.event.events.StartUpEvent;
 import net.tindersamurai.russophobot.bot.message.AMessageProcessor;
 import net.tindersamurai.russophobot.bot.reply.IBotReply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -23,6 +26,7 @@ public class ContactBot extends TelegramLongPollingBot {
 
 	@Autowired
 	public ContactBot(
+			ApplicationEventPublisher publisher,
 			AMessageProcessor messageProcessor,
 			ABotCommand[] commands,
 			IBotReply reply
@@ -30,6 +34,8 @@ public class ContactBot extends TelegramLongPollingBot {
 		this.messageProcessor = messageProcessor;
 		this.commands = commands;
 		this.reply = reply;
+
+		publisher.publishEvent(new StartUpEvent(true));
 	}
 
 	@Override

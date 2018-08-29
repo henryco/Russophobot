@@ -26,7 +26,7 @@ public class SubscribeController {
 	@GetMapping(value = "/list")
 	public String list() {
 		val builder = new StringBuilder();
-		for (String s : dataService.getSubscribers())
+		for (String s : dataService.getSubscribersInfo())
 			builder.append(s).append("\n");
 		return builder.toString();
 	}

@@ -1,6 +1,5 @@
-package net.tindersamurai.russophobot;
+package net.tindersamurai.russophobot.config;
 
-import lombok.val;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
