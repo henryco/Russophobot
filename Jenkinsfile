@@ -52,7 +52,7 @@ pipeline {
         sh 'chmod a+x /home/Programs/Russophobot/out/russophobot.jar'
 
 	    withEnv(overrides: ['JENKINS_NODE_COOKIE=dontKillMe']) {
-          sh 'cd /home/Programs/Russophobot/out/ && nohup ./russophobot.sh &'
+          sh 'cd /home/Programs/Russophobot/out/ && ./russophobot.sh'
         }
       }
     }
