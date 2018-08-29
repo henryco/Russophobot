@@ -42,6 +42,11 @@ public class SimpleDataService implements IDataService {
 		return subscriberRepository.existsById(id);
 	}
 
+	@Override
+	public boolean activeSubscriberExists(int id) {
+		return subscriberRepository.existsByIdAndActiveTrue(id);
+	}
+
 	@Override @Transactional
 	public boolean subscribeUser(int id, String username, long chatId) {
 

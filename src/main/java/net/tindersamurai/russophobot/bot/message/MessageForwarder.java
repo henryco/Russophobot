@@ -2,6 +2,8 @@ package net.tindersamurai.russophobot.bot.message;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import net.tindersamurai.russophobot.mvc.data.entity.Mailer;
+import net.tindersamurai.russophobot.mvc.data.repository.MailersRepository;
 import net.tindersamurai.russophobot.mvc.data.repository.SubscriberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,7 @@ public class MessageForwarder extends AMessageProcessor {
 	private static final long MIN_TIMEOUT = 500; // ms
 
 	private final RedisTemplate<String, Object> template;
+	private final MailersRepository mailersRepository;
 	private final SubscriberRepository repository;
 
 	@Value("${timeout.message}")
@@ -32,8 +35,10 @@ public class MessageForwarder extends AMessageProcessor {
 	@Autowired
 	public MessageForwarder(
 			RedisTemplate<String, Object> template,
+			MailersRepository mailersRepository,
 			SubscriberRepository repository
 	) {
+		this.mailersRepository = mailersRepository;
 		this.template = template;
 		this.repository = repository;
 
@@ -98,8 +103,28 @@ public class MessageForwarder extends AMessageProcessor {
 
 			log.debug("Message forwarded: {}", forwardMessage);
 		}
+
+		updateMailerInfo(id, messageId);
+
 		return true;
 	}
+
+
+	private void updateMailerInfo(int id, int chatId) {
+
+		val mailer = new Mailer(); {
+			mailer.setChatId(chatId);
+			mailer.setMuted(false);
+			mailer.setId(id);
+		}
+
+		try {
+			mailersRepository.saveAndFlush(mailer);
+		} catch (Exception e) {
+			log.error("Cannot update Mailer info", e);
+		}
+	}
+
 
 	private long testTimeout(Message message) throws RuntimeException {
 

@@ -17,17 +17,17 @@ public class ContactBot extends TelegramLongPollingBot {
 	@Value("${token}") private String token;
 	@Value("${name}") private String name;
 
-	private final AMessageProcessor messageProcessor;
+	private final AMessageProcessor[] messageProcessors;
 	private final ABotCommand[] commands;
 	private final IBotReply reply;
 
 	@Autowired
 	public ContactBot(
-			AMessageProcessor messageProcessor,
+			AMessageProcessor[] messageProcessors,
 			ABotCommand[] commands,
 			IBotReply reply
 	) {
-		this.messageProcessor = messageProcessor;
+		this.messageProcessors = messageProcessors;
 		this.commands = commands;
 		this.reply = reply;
 
@@ -37,11 +37,17 @@ public class ContactBot extends TelegramLongPollingBot {
 	@Override
 	public void onUpdateReceived(Update update) {
 		log.debug("Update user: {}", update.getUpdateId());
-		if (!messageProcessor.process(update, this)) return;
-		if (!reply.process(update, this)) return;
-		for (ABotCommand command : commands) {
-			command.process(update, this);
-		}
+
+		if (!processLogic(update, commands))
+			return;
+
+		if (!processLogic(update, messageProcessors))
+			return;
+
+		if (!processLogic(update, reply))
+			return;
+
+		// TODO MORE OPTIONS
 	}
 
 	@Override
@@ -54,4 +60,11 @@ public class ContactBot extends TelegramLongPollingBot {
 		return token;
 	}
 
+	private boolean processLogic(Update update, IBotLogic ... array) {
+		for (IBotLogic logic : array) {
+			if (!logic.process(update, this))
+				return false;
+		}
+		return true;
+	}
 }

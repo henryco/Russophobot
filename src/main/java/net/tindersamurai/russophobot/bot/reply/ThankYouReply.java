@@ -47,6 +47,7 @@ public class ThankYouReply implements IBotReply {
 
 			log.debug("Reply to: {}", update.getMessage().getFrom().getUserName());
 			val message = new SendMessage()
+					.setReplyToMessageId(update.getMessage().getMessageId())
 					.setChatId(update.getMessage().getChatId())
 					.setText(response);
 			try {
