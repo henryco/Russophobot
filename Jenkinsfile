@@ -46,9 +46,9 @@ pipeline {
     }
 
     stage('Deploy') {
-    //  when {
-    //    branch 'release'
-    //  }
+      when {
+        branch 'release'
+      }
       steps {
 	    sh '(pkill -f HBlog) || true'
 
