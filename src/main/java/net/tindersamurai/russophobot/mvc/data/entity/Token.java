@@ -32,7 +32,7 @@ public class Token {
 
 
 	private @Column(
-			name = "userid",
+			name = "user_id",
 			nullable = false,
 			updatable = false
 	) int user;
