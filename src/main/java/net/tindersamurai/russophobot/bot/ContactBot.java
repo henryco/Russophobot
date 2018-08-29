@@ -35,6 +35,7 @@ public class ContactBot extends TelegramLongPollingBot {
 		this.commands = commands;
 		this.reply = reply;
 
+		log.debug("Emit startup event");
 		publisher.publishEvent(new StartUpEvent(true));
 	}
 

@@ -9,6 +9,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Slf4j
 public abstract class AEventProcessor {
 
+	protected AEventProcessor () {
+		log.debug("START EVENT PROCESSOR: {}", this);
+	}
+
 	@Autowired private AbsSender absSender;
 
 	protected AbsSender getAbsSender() {
