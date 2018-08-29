@@ -17,6 +17,7 @@ public abstract class AEventProcessor {
 
 	protected boolean sendMessage(BotApiMethod<?> message) {
 		try {
+			log.debug("Send message: {}", message);
 			absSender.execute(message);
 			return true;
 		} catch (TelegramApiException e) {
