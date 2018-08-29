@@ -74,6 +74,20 @@ public class MessageForwarder extends AMessageProcessor {
 			}
 
 			val chatId = subscriber.getChatId();
+
+			if (message.getSticker() != null) {
+				val textMsg = new SendMessage(); {
+					val from = message.getFrom();
+					textMsg.setChatId(chatId);
+					textMsg.setText((from.getUserName() == null || from.getUserName().isEmpty()) ?
+							from.getFirstName() + " " + from.getLastName()
+							: "@" + from.getUserName()
+					);
+				}
+				sender.execute(textMsg);
+			}
+
+
 			val forwardMessage = new ForwardMessage(); {
 				forwardMessage.setFromChatId(messageChatId);
 				forwardMessage.setMessageId(messageId);
