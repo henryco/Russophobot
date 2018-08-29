@@ -38,7 +38,7 @@ public class MessageReplier extends AMessageProcessor {
 
 		val id = message.getFrom().getId();
 		if (!dataService.activeSubscriberExists(id))
-			return false; // if author of reply is not subscriber => abort
+			return true; // if author of reply is not subscriber => skip
 
 		val reply = message.getReplyToMessage();
 
