@@ -46,11 +46,14 @@ public class MessageReplier extends AMessageProcessor {
 		if (forwardFrom == null)
 			return false; // we can reply only to forwards
 
+		log.debug("REPLY FORWARD CHAT: {}", reply.getForwardFromChat());
+
 		try {
 			val mailer = mailersRepository.getOne(forwardFrom.getId());
 			val msg = new SendMessage(); {
 				msg.setText(message.getText());
 				msg.setChatId(mailer.getChatId());
+				msg.setReplyToMessageId(reply.getForwardFromMessageId());
 			}
 			log.debug("REPLY TO MAILER: {}", msg);
 			sender.execute(msg);
