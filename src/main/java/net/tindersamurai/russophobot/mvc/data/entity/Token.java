@@ -3,6 +3,7 @@ package net.tindersamurai.russophobot.mvc.data.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,6 +14,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Data @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tokens")
+@Proxy(lazy=false)
 public class Token {
 
 	private @Id @Column(

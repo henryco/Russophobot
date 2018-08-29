@@ -6,7 +6,6 @@ import net.tindersamurai.russophobot.mvc.data.repository.MailersRepository;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -30,7 +29,7 @@ public class MessageReplier extends AMessageProcessor {
 		log.debug("MessageReplier initialized");
 	}
 
-	@Override @Transactional
+	@Override
 	protected boolean onMessage(Update update, AbsSender sender) throws Exception {
 
 		val message = update.getMessage();

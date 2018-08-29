@@ -3,6 +3,7 @@ package net.tindersamurai.russophobot.mvc.data.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @Entity @Data @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "subscribers")
+@Proxy(lazy=false)
 public class Subscriber {
 
 	private @Id @Column(
