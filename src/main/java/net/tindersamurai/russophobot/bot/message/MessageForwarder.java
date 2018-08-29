@@ -56,13 +56,15 @@ public class MessageForwarder extends AMessageProcessor {
 //		https://www.baeldung.com/spring-data-redis-tutorial
 //		https://redis.io/commands/expire
 
-		val timeout = testTimeout(message);
-		if (timeout > MIN_TIMEOUT) {
-			log.debug("TIMEOUT limit: {}ms, user: {}", timeout, userName + " | " + id);
-			sender.execute(new SendMessage()
-					.setChatId(update.getMessage().getChatId())
-					.setText(timeoutMsg + " " + (((float) timeout) / 1000f) + " sec"));
-			return false;
+		if (!repository.existsById(id)) {
+			val timeout = testTimeout(message);
+			if (timeout > MIN_TIMEOUT) {
+				log.debug("TIMEOUT limit: {}ms, user: {}", timeout, userName + " | " + id);
+				sender.execute(new SendMessage()
+						.setChatId(update.getMessage().getChatId())
+						.setText(timeoutMsg + " " + (((float) timeout) / 1000f) + " sec"));
+				return false;
+			}
 		}
 
 		for (val subscriber : repository.getAllByActiveTrue()) {
