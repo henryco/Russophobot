@@ -47,6 +47,7 @@ pipeline {
         branch 'release'
       }
       steps {
+        sh 'pkill -f russophobot || true'
         sh 'rm -f /home/Programs/Russophobot/out/russophobot.jar'
         sh 'cp build/libs/russophobot-0.0.1-SNAPSHOT.jar /home/Programs/Russophobot/out/russophobot.jar'
         sh 'chmod a+x /home/Programs/Russophobot/out/russophobot.jar'
