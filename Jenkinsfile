@@ -53,7 +53,7 @@ pipeline {
         sh 'chmod a+x /home/Programs/Russophobot/out/russophobot.jar'
 
 	    withEnv(overrides: ['JENKINS_NODE_COOKIE=dontKillMe']) {
-          sh 'cd /home/Programs/Russophobot/out/ && ./russopho_bot.sh &'
+          sh 'cd /home/Programs/Russophobot/out/ && nohup ./russopho_bot.sh &'
         }
       }
     }
@@ -64,11 +64,11 @@ pipeline {
 
       sh '(pkill -f gradle) || true'
 
-      junit 'build/test-results/**/*.xml'
-      sh 'rm -f -r test-arch'
-      sh 'mkdir test-arch'
-      sh 'zip -r test-arch/test-report.zip build/reports'
-      archiveArtifacts 'test-arch/*.zip'
+      //junit 'build/test-results/**/*.xml'
+      //sh 'rm -f -r test-arch'
+      //sh 'mkdir test-arch'
+      //sh 'zip -r test-arch/test-report.zip build/reports'
+      //archiveArtifacts 'test-arch/*.zip'
     }
   }
 
