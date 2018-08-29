@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import java.util.concurrent.TimeUnit;
 
 @Component @Slf4j
-@PropertySource(value = "classpath:/bot.properties", encoding = "UTF-8")
+@PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class MessageForwarder extends AMessageProcessor {
 
 	private static final long MAX_TIMEOUT = 600000; // ms == 10 min

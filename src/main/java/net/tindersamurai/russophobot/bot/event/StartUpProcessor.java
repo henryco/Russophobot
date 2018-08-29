@@ -5,6 +5,7 @@ import net.tindersamurai.russophobot.bot.event.events.StartUpEvent;
 import net.tindersamurai.russophobot.mvc.data.entity.Subscriber;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @Component @Slf4j
-@PropertySource(value = "classpath:/bot.properties", encoding = "UTF-8")
+@PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class StartUpProcessor extends AEventProcessor {
 
-	private static final String STARTUP_MSG = "Bot started!";
+	@Value("${startup.message}")
+	private String startupMsg;
+
 	private final IDataService dataService;
 
 	@Autowired
@@ -28,7 +31,7 @@ public class StartUpProcessor extends AEventProcessor {
 		log.debug("STARTUP EVENT");
 		dataService.getAllSubscribers().stream().filter(Subscriber::isActive).forEach(subscriber -> {
 			log.debug("SEND START UP NOTIFICATION TO: {}", subscriber);
-			sendMessage(new SendMessage(subscriber.getChatId(), STARTUP_MSG));
+			sendMessage(new SendMessage(subscriber.getChatId(), startupMsg));
 		});
 	}
 
