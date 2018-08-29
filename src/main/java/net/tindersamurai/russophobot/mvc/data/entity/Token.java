@@ -12,6 +12,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity
 @Data @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "tokens")
 public class Token {
 
 	private @Id @Column(

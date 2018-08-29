@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity @Data @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "subscribers")
 public class Subscriber {
 
 	private @Id @Column(
@@ -31,6 +33,7 @@ public class Subscriber {
 			name = "username",
 			unique = true
 	) String username;
+
 
 	private @Column(
 			name = "active",
