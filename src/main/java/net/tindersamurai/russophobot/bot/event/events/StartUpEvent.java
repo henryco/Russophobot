@@ -1,7 +1,12 @@
 package net.tindersamurai.russophobot.bot.event.events;
 
-import lombok.Value;
+import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
-@Value public class StartUpEvent {
-	private boolean status;
+public class StartUpEvent extends ApplicationEvent {
+	private @Getter boolean status;
+	public StartUpEvent(boolean status) {
+		super(status);
+		this.status = status;
+	}
 }
