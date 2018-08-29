@@ -44,7 +44,7 @@ public class MessageReplier extends AMessageProcessor {
 
 		val forwardFrom = reply.getForwardFrom();
 		if (forwardFrom == null)
-			return false; // we can reply ony to forwards
+			return false; // we can reply only to forwards
 
 		try {
 			val mailer = mailersRepository.getOne(forwardFrom.getId());
@@ -52,6 +52,7 @@ public class MessageReplier extends AMessageProcessor {
 				msg.setText(message.getText());
 				msg.setChatId(mailer.getChatId());
 			}
+			log.debug("REPLY TO MAILER: {}", msg);
 			sender.execute(msg);
 		} catch (EntityNotFoundException e) {
 			log.debug("Mailer not registered, abort");
