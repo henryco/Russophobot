@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service @Slf4j
@@ -99,9 +100,15 @@ public class SimpleDataService implements IDataService {
 		}
 	}
 
+
 	@Override
-	public String[] getSubscribers() {
-		return subscriberRepository.findAll().stream().map(Subscriber::toString).toArray(String[]::new);
+	public List<Subscriber> getAllSubscribers() {
+		return subscriberRepository.findAll();
+	}
+
+	@Override
+	public String[] getSubscribersInfo() {
+		return getAllSubscribers().stream().map(Subscriber::toString).toArray(String[]::new);
 	}
 
 	private final class Helper {

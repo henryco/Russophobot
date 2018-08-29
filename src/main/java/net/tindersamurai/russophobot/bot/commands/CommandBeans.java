@@ -7,12 +7,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration @Slf4j
 public class CommandBeans {
 
-	@Bean
-	public ABotCommand[] provideCommands(
-			SubscribeCommand subscribeCommand
-	) {
-		return new ABotCommand[] {
-				subscribeCommand
-		};
-	}
+//	TODO REMOVE
+//	@Bean
+//	public ABotCommand[] provideCommands(
+//			SubscribeCommand subscribeCommand
+//	) {
+//		return new ABotCommand[] {
+//				subscribeCommand
+//		};
+//	}
+
 }
