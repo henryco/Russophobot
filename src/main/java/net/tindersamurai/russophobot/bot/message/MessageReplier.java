@@ -36,7 +36,7 @@ public class MessageReplier extends AMessageProcessor {
 		if (!message.isReply())
 			return true; // if it is not reply => skip
 
-		val id = message.getForwardFrom().getId();
+		val id = message.getFrom().getId();
 		if (!dataService.activeSubscriberExists(id))
 			return false; // if author of reply is not subscriber => abort
 
@@ -51,8 +51,8 @@ public class MessageReplier extends AMessageProcessor {
 			val msg = new SendMessage(); {
 				msg.setText(message.getText());
 				msg.setChatId(mailer.getChatId());
-				sender.execute(msg);
 			}
+			sender.execute(msg);
 		} catch (EntityNotFoundException e) {
 			log.debug("Mailer not registered, abort");
 			val msg = new SendMessage();{

@@ -45,7 +45,7 @@ public class ThankYouReply implements IBotReply {
 			val id = update.getMessage().getFrom().getId();
 			val response = dataService.subscriberExists(id) ? subscriberResponse : rollMessage();
 
-			log.debug("Reply to: {}", update.getMessage().getFrom().getUserName());
+			log.debug("Reply to: {} : {}", update.getMessage().getFrom().getUserName(), id);
 			val message = new SendMessage()
 					.setReplyToMessageId(update.getMessage().getMessageId())
 					.setChatId(update.getMessage().getChatId())

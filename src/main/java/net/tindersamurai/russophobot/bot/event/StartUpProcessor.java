@@ -27,7 +27,7 @@ public class StartUpProcessor extends AEventProcessor {
 
 	@EventListener()
 	public void onBotStartUp(ApplicationStartedEvent event) {
-		log.debug("STARTUP EVENT");
+		log.debug("STARTUP EVENT: {}", event);
 		dataService.getAllSubscribers().stream().filter(Subscriber::isActive).forEach(subscriber -> {
 			log.debug("SEND START UP NOTIFICATION TO: {}", subscriber);
 			sendMessage(new SendMessage(subscriber.getChatId(), startupMsg));
