@@ -63,9 +63,10 @@ public class MessageReplier extends AMessageProcessor {
 			val msg = new SendMessage();{
 				msg.setChatId(message.getChatId());
 				msg.setReplyToMessageId(message.getMessageId());
-				msg.setText("The recipient has not yet been registered");
+				msg.setText("The recipient has not been registered yet");
 			}
 			sender.execute(msg);
+			return false;
 		}
 
 		return true;
