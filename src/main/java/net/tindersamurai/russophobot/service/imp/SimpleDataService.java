@@ -37,10 +37,17 @@ public class SimpleDataService implements IDataService {
 		this.emailService = emailService;
 	}
 
+	@Override
+	public boolean subscriberExists(int id) {
+		return subscriberRepository.existsById(id);
+	}
+
 	@Override @Transactional
 	public boolean subscribeUser(int id, String username, long chatId) {
 
 		try {
+			if (subscriberRepository.existsById(id))
+				return false;
 			val subscriber = new Subscriber(id, chatId, username,false);
 			val token = new Token(); {
 				token.setId(new Helper().genTokenId());

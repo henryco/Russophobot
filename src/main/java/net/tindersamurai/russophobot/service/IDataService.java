@@ -7,6 +7,7 @@ import java.util.List;
 public interface IDataService {
 
 	boolean subscribeUser(int id, String username, long chatId);
+	boolean subscriberExists(int id);
 	boolean unSubscribeUser(int id);
 	boolean confirmSubscriberViaToken(String token);
 

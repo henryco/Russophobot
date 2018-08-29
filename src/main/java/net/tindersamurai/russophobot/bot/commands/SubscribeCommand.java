@@ -19,6 +19,9 @@ public class SubscribeCommand extends ABotCommand {
 	@Value("${subscription.response.ok}")
 	private String subscribeOk;
 
+//	@Value("")
+	private String subscriptionExist = "Subscribed";
+
 	private final IDataService dataService;
 
 	@Autowired
@@ -48,6 +51,18 @@ public class SubscribeCommand extends ABotCommand {
 				sender.execute(message);
 			} catch (TelegramApiException e) {
 				log.error("Cannot send reply message", e);
+			}
+		}
+		else {
+			if (dataService.subscriberExists(id)) {
+				val message = new SendMessage()
+						.setText(subscriptionExist)
+						.setChatId(chatId);
+				try {
+					sender.execute(message);
+				} catch (TelegramApiException e) {
+					log.error("Cannot send reply message", e);
+				}
 			}
 		}
 	}
