@@ -26,7 +26,7 @@ public class StartUpProcessor extends AEventProcessor {
 		this.dataService = dataService;
 	}
 
-	@Async @EventListener
+	@EventListener
 //			(condition = "#event.status == true")
 	public void onBotStartUp(StartUpEvent event) {
 		log.debug("STARTUP EVENT");
