@@ -46,13 +46,6 @@ public class MessageReplier extends AMessageProcessor {
 		if (forwardFrom == null)
 			return false; // we can reply only to forwards
 
-		log.debug("***\n\n");
-		log.debug("REPLY: {}", reply);
-		log.debug("TXT: {}", reply.getText());
-		log.debug("RTM: {}", reply.getReplyToMessage());
-		log.debug("ID: {}", reply.getMessageId());
-		log.debug("***");
-
 		try {
 			val mailer = mailersRepository.getOne(forwardFrom.getId());
 			val msg = new SendMessage(); {
