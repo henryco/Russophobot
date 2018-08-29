@@ -56,7 +56,7 @@ public class MessageForwarder extends AMessageProcessor {
 //		https://www.baeldung.com/spring-data-redis-tutorial
 //		https://redis.io/commands/expire
 
-		if (!repository.existsById(id)) {
+		if (!repository.existsByIdAndActiveTrue(id)) {
 			val timeout = testTimeout(message);
 			if (timeout > MIN_TIMEOUT) {
 				log.debug("TIMEOUT limit: {}ms, user: {}", timeout, userName + " | " + id);
@@ -69,7 +69,7 @@ public class MessageForwarder extends AMessageProcessor {
 
 		for (val subscriber : repository.getAllByActiveTrue()) {
 			if (subscriber.getId() == id) {
-				log.debug("Message ignored: {}", userName + " | " + id);
+				log.debug("Message ignored because sender == receiver: {}", userName + " | " + id);
 				continue;
 			}
 
