@@ -11,13 +11,13 @@ import org.springframework.scheduling.support.TaskUtils;
 @Configuration
 public class AppEventConfiguration {
 
-//	@Bean
-//	public ApplicationEventMulticaster applicationEventMulticaster() {
-//		val eventMulticaster = new SimpleApplicationEventMulticaster(); {
-//			eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-//			eventMulticaster.setErrorHandler(TaskUtils.LOG_AND_PROPAGATE_ERROR_HANDLER);
-//		}
-//		return eventMulticaster;
-//	}
+	@Bean
+	public ApplicationEventMulticaster applicationEventMulticaster() {
+		val eventMulticaster = new SimpleApplicationEventMulticaster(); {
+			eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+			eventMulticaster.setErrorHandler(TaskUtils.LOG_AND_PROPAGATE_ERROR_HANDLER);
+		}
+		return eventMulticaster;
+	}
 
 }

@@ -1,14 +1,13 @@
 package net.tindersamurai.russophobot.bot.event;
 
 import lombok.extern.slf4j.Slf4j;
-import net.tindersamurai.russophobot.bot.event.events.StartUpEvent;
 import net.tindersamurai.russophobot.mvc.data.entity.Subscriber;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -26,9 +25,8 @@ public class StartUpProcessor extends AEventProcessor {
 		this.dataService = dataService;
 	}
 
-	@EventListener
-//			(condition = "#event.status == true")
-	public void onBotStartUp(StartUpEvent event) {
+	@EventListener()
+	public void onBotStartUp(ApplicationStartedEvent event) {
 		log.debug("STARTUP EVENT");
 		dataService.getAllSubscribers().stream().filter(Subscriber::isActive).forEach(subscriber -> {
 			log.debug("SEND START UP NOTIFICATION TO: {}", subscriber);
