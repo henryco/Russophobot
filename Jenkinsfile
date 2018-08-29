@@ -47,13 +47,13 @@ pipeline {
         branch 'release'
       }
       steps {
-        sh '(pkill -f russophobot) || true'
-        sh 'rm -f /home/Programs/Russophobot/out/russophobot.jar'
-        sh 'cp build/libs/russophobot-0.0.1-SNAPSHOT.jar /home/Programs/Russophobot/out/russophobot.jar'
-        sh 'chmod a+x /home/Programs/Russophobot/out/russophobot.jar'
+        sh '(pkill -f RussophoBot) || true'
+        sh 'rm -f /home/Programs/Russophobot/out/RussophoBot-0.0.1.jar'
+        sh 'cp build/libs/russophobot-0.0.1-SNAPSHOT.jar /home/Programs/Russophobot/out/RussophoBot-0.0.1.jar'
+        sh 'chmod a+x /home/Programs/Russophobot/out/RussophoBot-0.0.1.jar'
 
 	    withEnv(overrides: ['JENKINS_NODE_COOKIE=dontKillMe']) {
-          sh 'cd /home/Programs/Russophobot/out/ && nohup ./russopho_bot.sh &'
+          sh 'cd /home/Programs/Russophobot/out/ && nohup ./russophobot_bg.sh &'
         }
       }
     }
