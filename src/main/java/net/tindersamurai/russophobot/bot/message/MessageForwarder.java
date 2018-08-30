@@ -84,7 +84,7 @@ public class MessageForwarder extends AMessageProcessor {
 				val textMsg = new SendMessage(); {
 					val from = message.getFrom();
 					textMsg.setChatId(chatId);
-					textMsg.setText("FROM: " + ((from.getUserName() == null || from.getUserName().isEmpty()) ?
+					textMsg.setText("\uD83D\uDCE8 " + ((from.getUserName() == null || from.getUserName().isEmpty()) ?
 							from.getFirstName() + " " + from.getLastName()
 							: "@" + from.getUserName())
 					);
