@@ -44,6 +44,7 @@ public class StickerCommand extends ABotCommand {
 
 	@Override
 	protected void onContextCommand(Update update, AbsSender sender) {
+		log.debug("Context command: {}", getCommandName());
 
 		val chatId = update.getMessage().getChatId();
 		val sticker = update.getMessage().getSticker();

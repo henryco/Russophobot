@@ -36,6 +36,7 @@ public class NotifyCommand extends ABotCommand {
 
 	@Override
 	protected void onContextCommand(Update update, AbsSender sender) {
+		log.debug("Context command: {}", getCommandName());
 		val chatId = update.getMessage().getChatId();
 		val text = update.getMessage().getText();
 		if (text == null || text.trim().isEmpty()) {
@@ -45,6 +46,7 @@ public class NotifyCommand extends ABotCommand {
 
 		for (val mailer : dataService.getAllMailers()) {
 			if (mailer.getId() == update.getMessage().getFrom().getId()) continue;
+			log.debug("BROADCAST NOTIFICATION TO: {}", mailer);
 			sendMessage(new SendMessage(mailer.getChatId(), text), sender);
 		}
 		sendMessage(new SendMessage(chatId, "Done"), sender);
