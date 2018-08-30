@@ -6,12 +6,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component @Slf4j
-public class InlineDelayedPost extends ABotInlineProcessor {
+public class MainInlineProcessor extends ABotInlineProcessor {
 
 
 	@Override
 	protected boolean onInlineCall(Update update, AbsSender sender) {
-		log.debug("Query: {}", update.getInlineQuery());
 		return true;
 	}
 }
