@@ -21,6 +21,7 @@ public class BotCommandContext implements ICommandContext {
 
 	@Override
 	public void setActualCommand(String key, String command) {
+		log.debug("SET ACTUAL COMMAND: {} : {}", key, command);
 		if (key == null) {
 			log.error("Key cannot be null, command: {}", command);
 			return;
@@ -31,6 +32,7 @@ public class BotCommandContext implements ICommandContext {
 
 	@Override
 	public String getActualCommand(String key) {
+		log.debug("GET ACTUAL COMMAND: {}", key);
 		if (key == null) {
 			log.error("Key cannot be null");
 			return null;
@@ -45,6 +47,7 @@ public class BotCommandContext implements ICommandContext {
 
 	@Override
 	public void removeCommand(String key) {
+		log.debug("REMOVE COMMAND: {}", key);
 		if (key == null) {
 			log.error("Key cannot be null");
 			return;

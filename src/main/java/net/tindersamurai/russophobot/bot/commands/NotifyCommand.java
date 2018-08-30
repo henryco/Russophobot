@@ -45,6 +45,7 @@ public class NotifyCommand extends ABotCommand {
 
 		for (val mailer : dataService.getAllMailers())
 			sendMessage(new SendMessage(mailer.getChatId(), text), sender);
+		sendMessage(new SendMessage(chatId, "Done"), sender);
 	}
 
 	@Override
