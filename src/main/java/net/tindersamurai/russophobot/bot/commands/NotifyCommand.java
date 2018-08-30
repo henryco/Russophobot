@@ -4,13 +4,22 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component @Slf4j
+@PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class NotifyCommand extends ABotCommand {
+
+	@Value("${unauthorized.message}")
+	private String accessDeniedMsg;
+
+	@Value("${done.message}")
+	private String doneMsg;
 
 	private final IDataService dataService;
 
@@ -26,7 +35,7 @@ public class NotifyCommand extends ABotCommand {
 		val command = update.getMessage().getText().substring(1);
 
 		if (!dataService.activeSubscriberExists(id)) {
-			sendMessage(new SendMessage(chatId, "Access denied"), sender);
+			sendMessage(new SendMessage(chatId, accessDeniedMsg), sender);
 			return;
 		}
 
@@ -49,7 +58,7 @@ public class NotifyCommand extends ABotCommand {
 			log.debug("BROADCAST NOTIFICATION TO: {}", mailer);
 			sendMessage(new SendMessage(mailer.getChatId(), text), sender);
 		}
-		sendMessage(new SendMessage(chatId, "Done"), sender);
+		sendMessage(new SendMessage(chatId, doneMsg), sender);
 	}
 
 	@Override

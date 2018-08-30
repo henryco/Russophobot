@@ -4,15 +4,21 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component @Slf4j
+@PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class ListCommand extends ABotCommand {
 
 	private final IDataService dataService;
+
+	@Value("${unauthorized.message}")
+	private String accessDeniedMsg;
 
 	@Autowired
 	public ListCommand(IDataService dataService) {
@@ -26,7 +32,7 @@ public class ListCommand extends ABotCommand {
 		val chatId = update.getMessage().getChatId();
 
 		if (!dataService.activeSubscriberExists(id)) {
-			sendMessage(new SendMessage(chatId, "Access denied"), sender);
+			sendMessage(new SendMessage(chatId, accessDeniedMsg), sender);
 			return;
 		}
 

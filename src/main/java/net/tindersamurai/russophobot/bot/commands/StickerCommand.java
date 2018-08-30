@@ -6,16 +6,26 @@ import net.tindersamurai.russophobot.bot.BotVariables;
 import net.tindersamurai.russophobot.service.IConfigService;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component @Slf4j
+@PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class StickerCommand extends ABotCommand {
 
 	private final IConfigService configService;
 	private final IDataService dataService;
+
+
+	@Value("${unauthorized.message}")
+	private String accessDeniedMsg;
+
+	@Value("${done.message}")
+	private String doneMsg;
 
 	@Autowired
 	public StickerCommand(
@@ -34,7 +44,7 @@ public class StickerCommand extends ABotCommand {
 		val command = update.getMessage().getText().substring(1);
 
 		if (!dataService.activeSubscriberExists(id)) {
-			sendMessage(new SendMessage(chatId, "Access denied"), sender);
+			sendMessage(new SendMessage(chatId, accessDeniedMsg), sender);
 			return;
 		}
 
@@ -54,7 +64,7 @@ public class StickerCommand extends ABotCommand {
 		}
 
 		configService.saveProp(BotVariables.PINED_STICKER, sticker.getFileId());
-		sendMessage(new SendMessage(chatId, "Done"), sender);
+		sendMessage(new SendMessage(chatId, doneMsg), sender);
 	}
 
 	@Override
