@@ -28,8 +28,8 @@ public abstract class ABotCommand implements IBotLogic {
 	@Override
 	public final boolean process(Update update, AbsSender sender) {
 		if (update.hasMessage() && !update.getMessage().isCommand()) {
-			processContext(update, sender);
-			return false;
+			val executed = processContext(update, sender);
+			return !executed;
 		}
 		else if (update.hasMessage() && update.getMessage().isCommand())
 			processCommand(update, sender);
@@ -40,15 +40,17 @@ public abstract class ABotCommand implements IBotLogic {
 		commandContext.setActualCommand(id, command);
 	}
 
-	private void processContext(Update update, AbsSender sender) {
+	private boolean processContext(Update update, AbsSender sender) {
 		val id = update.getMessage().getFrom().getId();
 		val command = commandContext.getActualCommand(id);
-		if (command == null) return;
+		if (command == null) return false;
 		log.debug("Context command: {}, Found: {}", getCommandName(), command);
 		if (check(getCommandName(), command)) {
 			onContextCommand(update, sender);
 			commandContext.removeCommand(id);
+			return true;
 		}
+		return false;
 	}
 
 	private void processCommand(Update update, AbsSender sender) {
