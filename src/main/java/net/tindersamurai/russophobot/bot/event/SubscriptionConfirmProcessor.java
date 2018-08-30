@@ -5,6 +5,7 @@ import lombok.val;
 import net.tindersamurai.russophobot.bot.event.events.SubscriptionConfirmEvent;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 @Component @Slf4j
 @PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class SubscriptionConfirmProcessor extends AEventProcessor {
+
+	@Value("${subscription.success}")
+	private String success;
 
 	private final IDataService dataService;
 
@@ -28,7 +32,7 @@ public class SubscriptionConfirmProcessor extends AEventProcessor {
 			log.error("Subscriber == null");
 			return;
 		}
-		sendMessage(new SendMessage(subscriber.getChatId(), "\uD83D\uDEA6Successful subscription\uD83D\uDEA6"));
+		sendMessage(new SendMessage(subscriber.getChatId(), success));
 	}
 
 }
