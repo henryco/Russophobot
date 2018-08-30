@@ -93,7 +93,7 @@ public class SimpleDataService implements IDataService {
 	}
 
 	@Override @Transactional
-	public boolean confirmSubscriberViaToken(String token) {
+	public Subscriber confirmSubscriberViaToken(String token) {
 		try {
 			val t = tokenRepository.getOne(token);
 			val user = subscriberRepository.getOne(t.getUser());
@@ -103,20 +103,29 @@ public class SimpleDataService implements IDataService {
 				subscriberRepository.save(user);
 				tokenRepository.delete(t);
 				log.debug("subscription confirmed: {}", token);
-				return true;
+				return user;
 			}
 
 			subscriberRepository.delete(user);
 			tokenRepository.delete(t);
 			log.debug("subscription unconfirmed: {}", token);
-			return false;
+			return null;
 
 		} catch (Exception e) {
 			log.error("confirmSubscriberViaToken: " + token, e);
-			return false;
+			return null;
 		}
 	}
 
+	@Override
+	public Subscriber getSubscriberById(int id) {
+		try {
+			return subscriberRepository.getOne(id);
+		} catch (Exception e) {
+			log.error("Cannot find subscriber: {}", id, e);
+			return null;
+		}
+	}
 
 	@Override
 	public List<Subscriber> getAllSubscribers() {

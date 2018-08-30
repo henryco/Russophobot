@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEvent;
 
 @Slf4j
-public class MessageEvent extends ApplicationEvent {
+public final class MessageEvent extends ApplicationEvent {
 	private @Getter final String message;
 	public MessageEvent(String message) {
 		super(message);

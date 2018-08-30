@@ -25,7 +25,7 @@ public class StartUpProcessor extends AEventProcessor {
 		this.dataService = dataService;
 	}
 
-	@EventListener()
+	@EventListener
 	public void onBotStartUp(ApplicationStartedEvent event) {
 		log.debug("STARTUP EVENT: {}", event);
 		dataService.getAllSubscribers().stream().filter(Subscriber::isActive).forEach(subscriber -> {
