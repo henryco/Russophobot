@@ -41,19 +41,17 @@ public class ListCommand extends ABotCommand {
 			for (val subscriber : dataService.getAllSubscribers()) {
 				msg.append("\uD83D\uDC64 ID: ").append(subscriber.getId());
 				if (subscriber.getUsername() != null)
-					msg.append(" UID: @").append(subscriber.getUsername());
-				msg.append(" CID: ").append(subscriber.getChatId());
-				msg.append(" Active: ").append(subscriber.isActive());
+					msg.append(" | UID: @").append(subscriber.getUsername());
+				msg.append(" | Active: ").append(subscriber.isActive());
 				msg.append("\n");
 			}
 
-			msg.append("Mailers:\n");
+			msg.append("\nMailers:\n");
 			for (val mailer : dataService.getAllMailers()) {
 				msg.append("\uD83D\uDDE3 ID: ").append(mailer.getId());
 				if (mailer.getUsername() != null)
-					msg.append(" UID: @").append(mailer.getUsername());
-				msg.append(" CID: ").append(mailer.getChatId());
-				msg.append(" Muted: ").append(mailer.isMuted());
+					msg.append(" | UID: @").append(mailer.getUsername());
+				msg.append(" | Muted: ").append(mailer.isMuted());
 				msg.append("\n");
 			}
 		}
