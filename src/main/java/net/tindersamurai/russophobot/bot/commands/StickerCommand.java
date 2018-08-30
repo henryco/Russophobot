@@ -53,6 +53,7 @@ public class StickerCommand extends ABotCommand {
 		}
 
 		configService.saveProp(BotVariables.PINED_STICKER, sticker.getFileId());
+		sendMessage(new SendMessage(chatId, "Done"), sender);
 	}
 
 	@Override
