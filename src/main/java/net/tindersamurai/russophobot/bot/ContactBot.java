@@ -2,6 +2,7 @@ package net.tindersamurai.russophobot.bot;
 
 import lombok.extern.slf4j.Slf4j;
 import net.tindersamurai.russophobot.bot.commands.ABotCommand;
+import net.tindersamurai.russophobot.bot.inline.ABotInlineProcessor;
 import net.tindersamurai.russophobot.bot.message.AMessageProcessor;
 import net.tindersamurai.russophobot.bot.reply.IBotReply;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,19 @@ public class ContactBot extends TelegramLongPollingBot {
 	@Value("${token}") private String token;
 	@Value("${name}") private String name;
 
+	private final ABotInlineProcessor[] inlineProcessors;
 	private final AMessageProcessor[] messageProcessors;
 	private final ABotCommand[] commands;
 	private final IBotReply reply;
 
 	@Autowired
 	public ContactBot(
+			ABotInlineProcessor[] inlineProcessors,
 			AMessageProcessor[] messageProcessors,
 			ABotCommand[] commands,
 			IBotReply reply
 	) {
+		this.inlineProcessors = inlineProcessors;
 		this.messageProcessors = messageProcessors;
 		this.commands = commands;
 		this.reply = reply;
@@ -37,6 +41,9 @@ public class ContactBot extends TelegramLongPollingBot {
 	@Override
 	public void onUpdateReceived(Update update) {
 		log.debug("Update user: {}", update.getUpdateId());
+
+		if (processLogic(update, inlineProcessors))
+			return;
 
 		if (!processLogic(update, commands))
 			return;
