@@ -2,8 +2,6 @@ package net.tindersamurai.russophobot.bot.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import net.tindersamurai.russophobot.mvc.data.entity.Mailer;
-import net.tindersamurai.russophobot.mvc.data.entity.Subscriber;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,19 +39,21 @@ public class ListCommand extends ABotCommand {
 
 			msg.append("Subscribers:\n");
 			for (val subscriber : dataService.getAllSubscribers()) {
-				msg.append("ID: ").append(subscriber.getId());
-				msg.append("UID: @").append(subscriber.getUsername());
-				msg.append("CID: ").append(subscriber.getChatId());
-				msg.append("Active: ").append(subscriber.isActive());
+				msg.append("\uD83D\uDC64 ID: ").append(subscriber.getId());
+				if (subscriber.getUsername() != null)
+					msg.append(" UID: @").append(subscriber.getUsername());
+				msg.append(" CID: ").append(subscriber.getChatId());
+				msg.append(" Active: ").append(subscriber.isActive());
 				msg.append("\n");
 			}
 
 			msg.append("Mailers:\n");
 			for (val mailer : dataService.getAllMailers()) {
-				msg.append("ID: ").append(mailer.getId());
-				msg.append("UID: @").append(mailer.getUsername());
-				msg.append("CID: ").append(mailer.getChatId());
-				msg.append("Muted: ").append(mailer.isMuted());
+				msg.append("\uD83D\uDDE3 ID: ").append(mailer.getId());
+				if (mailer.getUsername() != null)
+					msg.append(" UID: @").append(mailer.getUsername());
+				msg.append(" CID: ").append(mailer.getChatId());
+				msg.append(" Muted: ").append(mailer.isMuted());
 				msg.append("\n");
 			}
 		}
