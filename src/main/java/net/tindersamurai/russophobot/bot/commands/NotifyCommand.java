@@ -43,8 +43,10 @@ public class NotifyCommand extends ABotCommand {
 			return;
 		}
 
-		for (val mailer : dataService.getAllMailers())
+		for (val mailer : dataService.getAllMailers()) {
+			if (mailer.getId() == update.getMessage().getFrom().getId()) continue;
 			sendMessage(new SendMessage(mailer.getChatId(), text), sender);
+		}
 		sendMessage(new SendMessage(chatId, "Done"), sender);
 	}
 

@@ -27,8 +27,10 @@ public abstract class ABotCommand implements IBotLogic {
 
 	@Override
 	public final boolean process(Update update, AbsSender sender) {
-		if (update.hasMessage() && !update.getMessage().isCommand())
+		if (update.hasMessage() && !update.getMessage().isCommand()) {
 			processContext(update, sender);
+			return false;
+		}
 		else if (update.hasMessage() && update.getMessage().isCommand())
 			processCommand(update, sender);
 		return true;
