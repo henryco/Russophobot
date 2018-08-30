@@ -104,15 +104,16 @@ public class MessageForwarder extends AMessageProcessor {
 			log.debug("Message forwarded: {}", forwardMessage);
 		}
 
-		updateMailerInfo(id, messageChatId);
+		updateMailerInfo(id, messageChatId, userName);
 
 		return true;
 	}
 
 
-	private void updateMailerInfo(int id, long chatId) {
+	private void updateMailerInfo(int id, long chatId, String username) {
 
 		val mailer = new Mailer(); {
+			mailer.setUsername(username);
 			mailer.setChatId(chatId);
 			mailer.setMuted(false);
 			mailer.setId(id);

@@ -1,5 +1,6 @@
 package net.tindersamurai.russophobot.service;
 
+import net.tindersamurai.russophobot.mvc.data.entity.Mailer;
 import net.tindersamurai.russophobot.mvc.data.entity.Subscriber;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface IDataService {
 	boolean confirmSubscriberViaToken(String token);
 
 	List<Subscriber> getAllSubscribers();
+
+	List<Mailer> getAllMailers();
 
 	String[] getSubscribersInfo();
 }

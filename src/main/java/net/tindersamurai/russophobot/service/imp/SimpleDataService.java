@@ -2,8 +2,10 @@ package net.tindersamurai.russophobot.service.imp;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import net.tindersamurai.russophobot.mvc.data.entity.Mailer;
 import net.tindersamurai.russophobot.mvc.data.entity.Subscriber;
 import net.tindersamurai.russophobot.mvc.data.entity.Token;
+import net.tindersamurai.russophobot.mvc.data.repository.MailersRepository;
 import net.tindersamurai.russophobot.mvc.data.repository.SubscriberRepository;
 import net.tindersamurai.russophobot.mvc.data.repository.TokenRepository;
 import net.tindersamurai.russophobot.service.IDataService;
@@ -22,6 +24,7 @@ public class SimpleDataService implements IDataService {
 	private static final long EXPIRATION_TIME = 3600000; // 1H
 
 	private final SubscriberRepository subscriberRepository;
+	private final MailersRepository mailersRepository;
 	private final TokenRepository tokenRepository;
 	private final IEmailService emailService;
 
@@ -29,10 +32,12 @@ public class SimpleDataService implements IDataService {
 	@Autowired
 	public SimpleDataService(
 			SubscriberRepository subscriberRepository,
+			MailersRepository mailersRepository,
 			TokenRepository tokenRepository,
 			IEmailService emailService
 	) {
 		this.subscriberRepository = subscriberRepository;
+		this.mailersRepository = mailersRepository;
 		this.tokenRepository = tokenRepository;
 		this.emailService = emailService;
 	}
@@ -116,6 +121,11 @@ public class SimpleDataService implements IDataService {
 	@Override
 	public List<Subscriber> getAllSubscribers() {
 		return subscriberRepository.findAll();
+	}
+
+	@Override
+	public List<Mailer> getAllMailers() {
+		return mailersRepository.findAll();
 	}
 
 	@Override

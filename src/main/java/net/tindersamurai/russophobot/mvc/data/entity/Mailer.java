@@ -37,4 +37,10 @@ public class Mailer {
 			nullable = false
 	) boolean muted;
 
+
+	private @Column(
+			name = "username",
+			unique = true
+	) String username;
+
 }

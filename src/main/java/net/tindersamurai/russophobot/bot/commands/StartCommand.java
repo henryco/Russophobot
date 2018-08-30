@@ -27,6 +27,7 @@ public class StartCommand extends ABotCommand {
 		val message = update.getMessage();
 
 		val mailer = new Mailer(); {
+			mailer.setUsername(message.getFrom().getUserName());
 			mailer.setId(message.getFrom().getId());
 			mailer.setChatId(message.getChatId());
 			mailer.setMuted(false);
