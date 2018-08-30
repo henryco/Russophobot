@@ -19,4 +19,8 @@ public interface IDataService {
 	List<Mailer> getAllMailers();
 
 	String[] getSubscribersInfo();
+
+	Mailer muteUnMuteMailer(int id);
+
+	boolean isMailerMuted(int id);
 }

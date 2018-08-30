@@ -61,6 +61,11 @@ public class MessageForwarder extends AMessageProcessor {
 //		https://www.baeldung.com/spring-data-redis-tutorial
 //		https://redis.io/commands/expire
 
+		if (mailersRepository.existsByIdAndMuted(id, true)) {
+			sendMessage(new SendMessage(messageChatId, "\uD83D\uDED1⛔️\uD83D\uDEAB"), sender);
+			return false;
+		}
+
 		if (!repository.existsByIdAndActiveTrue(id)) {
 			val timeout = testTimeout(message);
 			if (timeout > MIN_TIMEOUT) {

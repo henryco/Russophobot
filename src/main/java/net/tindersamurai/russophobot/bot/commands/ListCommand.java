@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component @Slf4j
 public class ListCommand extends ABotCommand {
@@ -24,14 +23,10 @@ public class ListCommand extends ABotCommand {
 	protected void onCommand(Update update, AbsSender sender) {
 
 		val id = update.getMessage().getFrom().getId();
+		val chatId = update.getMessage().getChatId();
+
 		if (!dataService.activeSubscriberExists(id)) {
-			try {
-				sender.execute(new SendMessage()
-						.setChatId(update.getMessage().getChatId())
-						.setText("Access denied"));
-			} catch (TelegramApiException e) {
-				log.error("Cannot send reply message", e);
-			}
+			sendMessage(new SendMessage(chatId, "Access denied"), sender);
 			return;
 		}
 
@@ -56,14 +51,7 @@ public class ListCommand extends ABotCommand {
 			}
 		}
 
-		try {
-			sender.execute(new SendMessage()
-					.setChatId(update.getMessage().getChatId())
-					.setText(msg.toString()));
-		} catch (TelegramApiException e) {
-			log.error("Cannot send reply message", e);
-		}
-
+		sendMessage(new SendMessage(chatId, msg.toString()), sender);
 	}
 
 	@Override

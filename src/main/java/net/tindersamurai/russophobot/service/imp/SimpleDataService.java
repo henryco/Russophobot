@@ -133,6 +133,28 @@ public class SimpleDataService implements IDataService {
 		return getAllSubscribers().stream().map(Subscriber::toString).toArray(String[]::new);
 	}
 
+	@Override
+	public Mailer muteUnMuteMailer(int id) {
+		try {
+			val mailer = mailersRepository.getOne(id);
+			mailer.setMuted(!mailer.isMuted());
+			return mailersRepository.saveAndFlush(mailer);
+		} catch (Exception e) {
+			log.debug("Cannot get mailer", e);
+			return null;
+		}
+	}
+
+	@Override
+	public boolean isMailerMuted(int id) {
+		try {
+			return mailersRepository.getOne(id).isMuted();
+		} catch (Exception e) {
+			log.debug("Cannot get mailer", e);
+			return false;
+		}
+	}
+
 	private final class Helper {
 
 		private String genTokenId() {

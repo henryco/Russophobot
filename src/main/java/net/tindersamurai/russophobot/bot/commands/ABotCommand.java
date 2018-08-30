@@ -5,8 +5,10 @@ import lombok.val;
 import net.tindersamurai.russophobot.bot.IBotLogic;
 import net.tindersamurai.russophobot.bot.commands.context.ICommandContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
 public abstract class ABotCommand implements IBotLogic {
