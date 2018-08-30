@@ -42,7 +42,7 @@ public class ContactBot extends TelegramLongPollingBot {
 	public void onUpdateReceived(Update update) {
 		log.debug("Update user: {}", update.getUpdateId());
 
-		if (processLogic(update, inlineProcessors))
+		if (!processLogic(update, inlineProcessors))
 			return;
 
 		if (!processLogic(update, commands))

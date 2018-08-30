@@ -10,7 +10,7 @@ public abstract class ABotInlineProcessor implements IBotLogic {
 
 	@Override
 	public boolean process(Update update, AbsSender sender) {
-		log.debug("update: {}", update);
+//		log.debug("update: {}", update);
 		if (update.hasInlineQuery()) {
 			log.debug("Inline query processor: {}", this.getClass());
 			return onInlineCall(update, sender);
