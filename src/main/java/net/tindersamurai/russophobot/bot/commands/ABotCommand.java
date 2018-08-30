@@ -5,10 +5,8 @@ import lombok.val;
 import net.tindersamurai.russophobot.bot.IBotLogic;
 import net.tindersamurai.russophobot.bot.commands.context.ICommandContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
 public abstract class ABotCommand implements IBotLogic {
@@ -17,6 +15,11 @@ public abstract class ABotCommand implements IBotLogic {
 
 	protected abstract void onCommand(Update update, AbsSender sender);
 	protected abstract String getCommandName();
+
+	protected void onContextCommand(Update update, AbsSender sender) {
+		log.debug("onContextCommand: {} {}", update, sender);
+		// overridable
+	}
 
 	protected final ICommandContext getCommandContext() {
 		return commandContext;
@@ -31,8 +34,19 @@ public abstract class ABotCommand implements IBotLogic {
 		return true;
 	}
 
+	protected final void setContextCommand(int id, String command) {
+		commandContext.setActualCommand(id, command);
+	}
+
 	private void processContext(Update update, AbsSender sender) {
-		// todo
+		val id = update.getMessage().getFrom().getId();
+		val command = commandContext.getActualCommand(id);
+		if (command == null) return;
+		log.debug("Context command: {}, Found: {}", getCommandName(), command);
+		if (check(getCommandName(), command)) {
+			onContextCommand(update, sender);
+			commandContext.removeCommand(id);
+		}
 	}
 
 	private void processCommand(Update update, AbsSender sender) {
