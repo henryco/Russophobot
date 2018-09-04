@@ -19,7 +19,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class AnonymousCommand  extends ABotCommand {
 
-	private static final String ERR_MSG = "Only text, sticker, audio, voice, video and photos supported";
+	private static final String ERR_MSG = "⛔️ Only text, sticker, audio, voice, video and photos supported";
 
 	private final ITimeoutService timeoutService;
 	private final IDataService dataService;
@@ -29,7 +29,10 @@ public class AnonymousCommand  extends ABotCommand {
 
 	// todo @Value("${anon.message}")
 	private String commandMessage =
-			"Следующее сообщение отправленное в течении этих 60 секунд будет анонимным.";
+			"Следующее сообщение отправленное в течении ближайших 60 секунд будет анонимным.";
+
+	// todo @Value("${anon.done}")
+	private String commandDone = "Анонимное сообщение отправлено";
 
 	@Autowired
 	public AnonymousCommand(
@@ -181,6 +184,7 @@ public class AnonymousCommand  extends ABotCommand {
 
 		});
 
+		sendMessage(new SendMessage(chatId, commandDone), sender);
 	}
 
 	@Override
