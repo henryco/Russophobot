@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @PropertySource(value = "classpath:/bot.properties", encoding = "UTF-8")
 public class SecretBundle {
 
-	@Value("secret.question") @Getter private String question;
-	@Value("secret.answer") @Getter private String answer;
+	@Value("${secret.question}") @Getter private String question;
+	@Value("${secret.answer}") @Getter private String answer;
 }
