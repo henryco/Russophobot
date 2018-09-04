@@ -57,7 +57,14 @@ public class ListCommand extends ABotCommand {
 			}
 		}
 
-		sendMessage(new SendMessage(chatId, msg.toString()), sender);
+		String message = msg.toString();
+		while (message.length() >= 2137) { // Jan Koder 3 kompilowal kody w sieci
+			val sub = message.substring(0, 2137);
+			message = message.substring(2137);
+			sendMessage(new SendMessage(chatId, sub), sender);
+		}
+
+  		sendMessage(new SendMessage(chatId, msg.toString()), sender);
 	}
 
 	@Override
