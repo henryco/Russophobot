@@ -2,6 +2,7 @@ package net.tindersamurai.russophobot.bot.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import net.tindersamurai.russophobot.bot.commands.util.SecretBundle;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +24,15 @@ public class SubscribeCommand extends ABotCommand {
 	private String subscriptionExist;
 
 	private final IDataService dataService;
+	private final SecretBundle secretBundle;
 
 	@Autowired
-	public SubscribeCommand(IDataService dataService) {
+	public SubscribeCommand(
+			IDataService dataService,
+			SecretBundle secretBundle
+	) {
 		this.dataService = dataService;
+		this.secretBundle = secretBundle;
 	}
 
 	@Override
@@ -39,8 +45,23 @@ public class SubscribeCommand extends ABotCommand {
 		val from = update.getMessage().getFrom();
 		val chatId = update.getMessage().getChatId();
 
+		setContextCommand(from.getId(), update.getMessage().getText().substring(1));
+		sendMessage(new SendMessage(chatId, secretBundle.getQuestion()), sender);
+	}
+
+	@Override
+	protected void onContextCommand(Update update, AbsSender sender) {
+
+		val chatId = update.getMessage().getChatId();
+		if (!update.getMessage().getText().trim().equalsIgnoreCase(secretBundle.getAnswer())) {
+			sendMessage(new SendMessage(chatId, "⛔️"), sender);
+			return;
+		}
+
+		val from = update.getMessage().getFrom();
 		val userName = from.getUserName();
 		val id = from.getId();
+
 		val success = dataService.subscribeUser(id, userName, chatId);
 
 		if (success) {
@@ -66,4 +87,5 @@ public class SubscribeCommand extends ABotCommand {
 			}
 		}
 	}
+
 }
