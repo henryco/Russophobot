@@ -1,7 +1,6 @@
 package net.tindersamurai.russophobot.bot;
 
 import lombok.val;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
