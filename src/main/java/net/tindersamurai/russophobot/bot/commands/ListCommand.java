@@ -57,10 +57,11 @@ public class ListCommand extends ABotCommand {
 			}
 		}
 
-		String message = msg.toString();
-		while (message.length() > 2137) { // Jan Koder 3 kompilowal kody w sieci
-			val sub = message.substring(0, 2137);
-			message = message.substring(2137);
+		String message = msg.toString().trim();
+		while (message.length() > 2137) { // Jan Programer 3 kompilowal kody w sieci
+			// FIXME there might be bug, but im tired and want to go watch anime
+			val sub = message.substring(0, 2137).trim();
+			message = message.substring(2137).trim();
 			sendMessage(new SendMessage(chatId, sub), sender);
 		}
 

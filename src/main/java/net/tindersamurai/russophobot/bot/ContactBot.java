@@ -1,61 +1,35 @@
 package net.tindersamurai.russophobot.bot;
 
 import lombok.extern.slf4j.Slf4j;
-import net.tindersamurai.russophobot.bot.commands.ABotCommand;
-import net.tindersamurai.russophobot.bot.inline.ABotInlineProcessor;
-import net.tindersamurai.russophobot.bot.message.AMessageProcessor;
-import net.tindersamurai.russophobot.bot.reply.IBotReply;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component @Slf4j @PropertySource("classpath:/bot.properties")
-public class ContactBot extends TelegramLongPollingBot {
+public final class ContactBot extends TelegramLongPollingBot {
 
 	@Value("${token}") private String token;
 	@Value("${name}") private String name;
 
-	private final ABotInlineProcessor[] inlineProcessors;
-	private final AMessageProcessor[] messageProcessors;
-	private final ABotCommand[] commands;
-	private final IBotReply reply;
+	private final IBotLogic mainBotLogic;
 
 	@Autowired
-	public ContactBot(
-			ABotInlineProcessor[] inlineProcessors,
-			AMessageProcessor[] messageProcessors,
-			ABotCommand[] commands,
-			IBotReply reply
-	) {
-		this.inlineProcessors = inlineProcessors;
-		this.messageProcessors = messageProcessors;
-		this.commands = commands;
-		this.reply = reply;
-
+	public ContactBot(@Qualifier("mainLogic") IBotLogic mainBotLogic) {
+		this.mainBotLogic = mainBotLogic;
 		log.debug("ContactBot initialized");
 	}
 
-	@Override
+
+	@Override @SuppressWarnings("UnnecessaryReturnStatement")
 	public void onUpdateReceived(Update update) {
-		log.debug("Update user: {}", update.getUpdateId());
-
-		if (!processLogic(update, inlineProcessors))
-			return;
-
-		if (!processLogic(update, commands))
-			return;
-
-		if (!processLogic(update, messageProcessors))
-			return;
-
-		if (!processLogic(update, reply))
-			return;
-
-		// TODO MORE OPTIONS
+		log.debug("Update statement");
+		val status = mainBotLogic.process(update, this);
+		log.debug("Update ended with status: {}", status ? "OK" : "ABORTED");
 	}
 
 	@Override
@@ -68,11 +42,4 @@ public class ContactBot extends TelegramLongPollingBot {
 		return token;
 	}
 
-	private boolean processLogic(Update update, IBotLogic ... array) {
-		for (IBotLogic logic : array) {
-			if (!logic.process(update, this))
-				return false;
-		}
-		return true;
-	}
 }

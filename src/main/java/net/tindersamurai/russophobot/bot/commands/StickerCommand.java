@@ -2,7 +2,7 @@ package net.tindersamurai.russophobot.bot.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import net.tindersamurai.russophobot.bot.BotVariables;
+import net.tindersamurai.russophobot.bot.util.BotVariables;
 import net.tindersamurai.russophobot.service.IConfigService;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;

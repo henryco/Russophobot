@@ -19,7 +19,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class AnonymousCommand  extends ABotCommand {
 
-	private static final String ERR_MSG = "⛔️ Only text, sticker, audio, voice, video and photos supported";
+	private static final String ERR_MSG = "⛔️Only text, sticker, audio, voice, video and photos supported";
 
 	private final ITimeoutService timeoutService;
 	private final IDataService dataService;
@@ -27,12 +27,11 @@ public class AnonymousCommand  extends ABotCommand {
 	@Value("${timeout.message}")
 	private String timeoutMsg;
 
-	// todo @Value("${anon.message}")
-	private String commandMessage =
-			"Следующее сообщение отправленное в течении ближайших 60 секунд будет анонимным.";
+	@Value("${anon.message}")
+	private String commandMessage;
 
-	// todo @Value("${anon.done}")
-	private String commandDone = "Анонимное сообщение отправлено";
+	@Value("${anon.done}")
+	private String commandDone;
 
 	@Autowired
 	public AnonymousCommand(
@@ -76,6 +75,9 @@ public class AnonymousCommand  extends ABotCommand {
 
 		boolean updated = false;
 		String mess = null;
+
+		// Какое API таки и вызовы, абстрактных типов в библиотеку не завезли хотя могли
+		// Так что юзаем что есть и как есть, я тут не причем.
 
 		if (message.getText() != null && !message.getText().trim().isEmpty()) {
 			mess = message.getText().trim();

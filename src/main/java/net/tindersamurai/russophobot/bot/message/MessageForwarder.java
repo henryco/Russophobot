@@ -50,13 +50,6 @@ public class MessageForwarder extends AMessageProcessor {
 		val messageChatId = message.getChatId();
 		val messageId = message.getMessageId();
 
-//		https://dzone.com/articles/using-redis-spring
-//		https://memorynotfound.com/spring-redis-application-configuration-example/
-//		https://www.baeldung.com/spring-data-redis-tutorial
-//		https://stackoverflow.com/questions/34893279/spring-data-redis-expire-key
-//		https://www.baeldung.com/spring-data-redis-tutorial
-//		https://redis.io/commands/expire
-
 		if (mailersRepository.existsByIdAndMuted(id, true)) {
 			sendMessage(new SendMessage(messageChatId, "\uD83D\uDED1⛔️\uD83D\uDEAB"), sender);
 			return false;
