@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public interface IBotLogic {
 	boolean process(Update update, AbsSender sender);
 
+	@SuppressWarnings("Duplicates")
 	default boolean sendMessage(BotApiMethod<?> message, AbsSender sender) {
 		val log = LoggerFactory.getLogger(this.getClass());
 		try {
