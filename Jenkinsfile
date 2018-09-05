@@ -19,6 +19,7 @@ pipeline {
 
     stage('Test') {
       steps {
+        sh 'echo TODO'
       //  sh './gradlew clean'
       //  sh './gradlew test --stacktrace'
       }
