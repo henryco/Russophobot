@@ -19,8 +19,8 @@ pipeline {
 
     stage('Test') {
       steps {
-        sh './gradlew clean'
-        sh './gradlew test --stacktrace'
+      //  sh './gradlew clean'
+      //  sh './gradlew test --stacktrace'
       }
     }
 
@@ -64,11 +64,11 @@ pipeline {
 
       sh '(pkill -f gradle) || true'
 
-      junit 'build/test-results/**/*.xml'
-      sh 'rm -f -r test-arch'
-      sh 'mkdir test-arch'
-      sh 'zip -r test-arch/test-report.zip build/reports'
-      archiveArtifacts 'test-arch/*.zip'
+      //junit 'build/test-results/**/*.xml'
+      //sh 'rm -f -r test-arch'
+      //sh 'mkdir test-arch'
+      //sh 'zip -r test-arch/test-report.zip build/reports'
+      //archiveArtifacts 'test-arch/*.zip'
     }
   }
 
