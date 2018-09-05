@@ -13,6 +13,7 @@ pipeline {
 
     stage('Check') {
       steps {
+	sh 'gradle clean'
         sh './gradlew check -x build -x test --stacktrace'
       }
     }
@@ -20,7 +21,6 @@ pipeline {
     stage('Test') {
       steps {
         sh 'echo TODO'
-      //  sh './gradlew clean'
       //  sh './gradlew test --stacktrace'
       }
     }
@@ -53,7 +53,7 @@ pipeline {
         sh 'cp build/libs/russophobot-0.0.1-SNAPSHOT.jar /home/Programs/Russophobot/out/RussophoBot-0.0.1.jar'
         sh 'chmod a+x /home/Programs/Russophobot/out/RussophoBot-0.0.1.jar'
 
-	    withEnv(overrides: ['JENKINS_NODE_COOKIE=dontKillMe']) {
+	withEnv(overrides: ['JENKINS_NODE_COOKIE=dontKillMe']) {
           sh 'cd /home/Programs/Russophobot/out/ && nohup ./russophobot_bg.sh &'
         }
       }
