@@ -5,15 +5,12 @@ import net.tindersamurai.russophobot.mvc.data.entity.Subscriber;
 
 import java.util.List;
 
-public interface IDataService {
+public interface IDataService extends ISubscriptionService {
 
 	boolean activeSubscriberExists(int id);
 
-	boolean subscribeUser(int id, String username, long chatId);
 	boolean subscriberExists(int id);
-	boolean unSubscribeUser(int id);
 
-	Subscriber confirmSubscriberViaToken(String token);
 	Subscriber getSubscriberById(int id);
 
 	List<Subscriber> getAllSubscribers();

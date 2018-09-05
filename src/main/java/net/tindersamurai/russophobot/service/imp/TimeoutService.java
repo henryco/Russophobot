@@ -18,16 +18,28 @@ public class TimeoutService implements ITimeoutService {
 	private static final long MAX_TIMEOUT = 600000; // ms == 10 min
 	private static final long MIN_TIMEOUT = 500; // ms
 
+
+	//		https://dzone.com/articles/using-redis-spring
+	//		https://memorynotfound.com/spring-redis-application-configuration-example/
+	//		https://www.baeldung.com/spring-data-redis-tutorial
+	//		https://stackoverflow.com/questions/34893279/spring-data-redis-expire-key
+	//		https://www.baeldung.com/spring-data-redis-tutorial
+	//		https://redis.io/commands/expire
+
+
 	private final RedisTemplate<String, Object> template;
 
 	@Autowired
 	public TimeoutService(RedisTemplate<String, Object> template) {
 		this.template = template;
+		log.debug("Timeout service creation");
 	}
 
 	@Override
 	public boolean isTimeouted(long timeout) {
-		return timeout > MIN_TIMEOUT;
+		val timeouted = timeout > MIN_TIMEOUT;
+		log.debug("TIMEOUTED: {}", timeouted);
+		return timeouted;
 	}
 
 	@Override

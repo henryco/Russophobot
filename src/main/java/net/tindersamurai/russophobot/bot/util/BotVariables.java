@@ -1,4 +1,4 @@
-package net.tindersamurai.russophobot.bot;
+package net.tindersamurai.russophobot.bot.util;
 
 public final class BotVariables {
 

@@ -2,8 +2,7 @@ package net.tindersamurai.russophobot.bot.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import net.tindersamurai.russophobot.bot.util.BotVariables;
-import net.tindersamurai.russophobot.service.IConfigService;
+import net.tindersamurai.russophobot.service.IAccessService;
 import net.tindersamurai.russophobot.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,24 +14,20 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component @Slf4j
 @PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
-public class StickerCommand extends ABotCommand {
+public class TokenCommand extends ABotCommand {
 
-	private final IConfigService configService;
+	private final IAccessService accessService;
 	private final IDataService dataService;
-
 
 	@Value("${unauthorized.message}")
 	private String accessDeniedMsg;
 
-	@Value("${done.message}")
-	private String doneMsg;
-
 	@Autowired
-	public StickerCommand(
-			IConfigService configService,
+	public TokenCommand(
+			IAccessService accessService,
 			IDataService dataService
 	) {
-		this.configService = configService;
+		this.accessService = accessService;
 		this.dataService = dataService;
 	}
 
@@ -47,28 +42,18 @@ public class StickerCommand extends ABotCommand {
 			return;
 		}
 
-		setContextCommand(id);
-		sendMessage(new SendMessage(chatId, "Now send sticker please"), sender);
-	}
-
-	@Override
-	protected void onContextCommand(Update update, AbsSender sender) {
-		log.debug("Context command: {}", getCommandName());
-
-		val chatId = update.getMessage().getChatId();
-		val sticker = update.getMessage().getSticker();
-		if (sticker == null) {
-			sendMessage(new SendMessage(chatId, "This is not sticker"), sender);
+		val token = accessService.generateAccessToken(id);
+		if (token == null) {
+			sendMessage(new SendMessage(chatId, "\uD83D\uDEA6Unexpected error"), sender);
 			return;
 		}
 
-		configService.saveProp(BotVariables.PINED_STICKER, sticker.getFileId());
-		sendMessage(new SendMessage(chatId, doneMsg), sender);
+		sendMessage(new SendMessage(chatId, "\uD83D\uDEA6Access Token:"), sender);
+		sendMessage(new SendMessage(chatId, token.getId()), sender);
 	}
 
 	@Override
 	protected String getCommandName() {
-		return "sticker";
+		return "token";
 	}
-
 }

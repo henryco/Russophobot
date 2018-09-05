@@ -2,7 +2,7 @@ package net.tindersamurai.russophobot.bot.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import net.tindersamurai.russophobot.bot.BotVariables;
+import net.tindersamurai.russophobot.bot.util.BotVariables;
 import net.tindersamurai.russophobot.mvc.data.entity.Mailer;
 import net.tindersamurai.russophobot.mvc.data.repository.MailersRepository;
 import net.tindersamurai.russophobot.service.IConfigService;

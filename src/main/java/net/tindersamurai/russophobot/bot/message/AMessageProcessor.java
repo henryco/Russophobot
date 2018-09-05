@@ -2,6 +2,7 @@ package net.tindersamurai.russophobot.bot.message;
 
 import lombok.extern.slf4j.Slf4j;
 import net.tindersamurai.russophobot.bot.IBotLogic;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
