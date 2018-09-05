@@ -5,6 +5,7 @@ import lombok.val;
 import net.tindersamurai.russophobot.mvc.data.entity.Mailer;
 import net.tindersamurai.russophobot.mvc.data.repository.MailersRepository;
 import net.tindersamurai.russophobot.mvc.data.repository.SubscriberRepository;
+import net.tindersamurai.russophobot.service.IHistoryService;
 import net.tindersamurai.russophobot.service.ITimeoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ForwardMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
@@ -23,6 +25,7 @@ public class MessageForwarder extends AMessageProcessor {
 	private final MailersRepository mailersRepository;
 	private final SubscriberRepository repository;
 	private final ITimeoutService timeoutService;
+	private final IHistoryService historyService;
 
 	@Value("${timeout.message}")
 	private String timeoutMsg;
@@ -32,10 +35,12 @@ public class MessageForwarder extends AMessageProcessor {
 	public MessageForwarder(
 			MailersRepository mailersRepository,
 			SubscriberRepository repository,
-			ITimeoutService timeoutService
+			ITimeoutService timeoutService,
+			IHistoryService historyService
 	) {
 		this.mailersRepository = mailersRepository;
 		this.timeoutService = timeoutService;
+		this.historyService = historyService;
 		this.repository = repository;
 
 		log.debug("MessageForwarder initialization");
@@ -65,6 +70,9 @@ public class MessageForwarder extends AMessageProcessor {
 				return false;
 			}
 		}
+
+		updateMailerInfo(id, messageChatId, userName);
+		saveHistoryRecord(message);
 
 		for (val subscriber : repository.getAllByActiveTrue()) {
 			if (subscriber.getId() == id) {
@@ -98,8 +106,6 @@ public class MessageForwarder extends AMessageProcessor {
 			log.debug("Message forwarded: {}", forwardMessage);
 		}
 
-		updateMailerInfo(id, messageChatId, userName);
-
 		return true;
 	}
 
@@ -118,6 +124,14 @@ public class MessageForwarder extends AMessageProcessor {
 		} catch (Exception e) {
 			log.error("Cannot update Mailer info", e);
 		}
+	}
+
+	private void saveHistoryRecord(Message message) {
+		// todo media
+		historyService.saveHistoryMessage(
+				message.getFrom().getId(),
+				message.getText()
+		);
 	}
 
 }

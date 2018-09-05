@@ -8,6 +8,7 @@ import org.hibernate.annotations.Proxy;
 import javax.persistence.*;
 import java.util.Date;
 
+import static javax.persistence.EnumType.ORDINAL;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
@@ -16,6 +17,11 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Table(name = "tokens")
 @Proxy(lazy=false)
 public class Token {
+
+	public enum Type {
+		AUTHORIZATION,
+		SUBSCRIPTION
+	}
 
 	private @Id @Column(
 			unique = true,
@@ -38,5 +44,14 @@ public class Token {
 			nullable = false,
 			updatable = false
 	) int user;
+
+
+	private @Column(
+			name = "type",
+			nullable = false,
+			updatable = false
+	) @Enumerated(
+			ORDINAL
+	) Type type;
 
 }
