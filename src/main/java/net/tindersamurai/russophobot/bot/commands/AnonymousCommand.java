@@ -4,12 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.tindersamurai.russophobot.mvc.data.entity.Subscriber;
 import net.tindersamurai.russophobot.service.IDataService;
+import net.tindersamurai.russophobot.service.IHistoryService;
 import net.tindersamurai.russophobot.service.ITimeoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.*;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -21,6 +23,7 @@ public class AnonymousCommand  extends ABotCommand {
 
 	private static final String ERR_MSG = "⛔️Only text, sticker, audio, voice, video and photos supported";
 
+	private final IHistoryService historyService;
 	private final ITimeoutService timeoutService;
 	private final IDataService dataService;
 
@@ -35,9 +38,11 @@ public class AnonymousCommand  extends ABotCommand {
 
 	@Autowired
 	public AnonymousCommand(
+			IHistoryService historyService,
 			ITimeoutService timeoutService,
 			IDataService dataService
 	) {
+		this.historyService = historyService;
 		this.timeoutService = timeoutService;
 		this.dataService = dataService;
 	}
@@ -112,13 +117,15 @@ public class AnonymousCommand  extends ABotCommand {
 			return;
 		}
 
+		saveHistoryRecord(message);
+
 		val finalMess = mess;
 		val finalUpdated = updated;
 		dataService.getAllSubscribers().stream().filter(Subscriber::isActive).forEach(subscriber -> {
 
 			final long chat = subscriber.getChatId();
 
-			sendMessage(new SendMessage(chat, "\uD83D\uDEA6Anonymous:"), sender);
+			sendMessage(new SendMessage(chat, "\uD83D\uDCE8Anonymous:"), sender);
 			if (finalMess != null) sendMessage(new SendMessage(chat, finalMess), sender);
 			if (!finalUpdated) return;
 
@@ -186,6 +193,13 @@ public class AnonymousCommand  extends ABotCommand {
 		});
 
 		sendMessage(new SendMessage(chatId, commandDone), sender);
+	}
+
+	private void saveHistoryRecord(Message message) {
+		// todo media
+		historyService.saveHistoryMessage(
+				null, message.getText()
+		);
 	}
 
 	@Override
