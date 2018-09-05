@@ -13,7 +13,7 @@ pipeline {
 
     stage('Check') {
       steps {
-	sh 'gradle clean'
+	sh './gradlew clean'
         sh './gradlew check -x build -x test --stacktrace'
       }
     }
