@@ -19,6 +19,7 @@ public abstract class AEventProcessor {
 		return absSender;
 	}
 
+	@SuppressWarnings("Duplicates")
 	protected boolean sendMessage(BotApiMethod<?> message) {
 		try {
 			log.debug("Send message: {}", message);

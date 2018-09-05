@@ -45,7 +45,7 @@ public class SubscribeCommand extends ABotCommand {
 		val from = update.getMessage().getFrom();
 		val chatId = update.getMessage().getChatId();
 
-		setContextCommand(from.getId(), update.getMessage().getText().substring(1));
+		setContextCommand(from.getId());
 		sendMessage(new SendMessage(chatId, secretBundle.getQuestion()), sender);
 	}
 
