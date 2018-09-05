@@ -7,6 +7,7 @@ import net.tindersamurai.russophobot.bot.message.AMessageProcessor;
 import net.tindersamurai.russophobot.bot.reply.IBotReply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;

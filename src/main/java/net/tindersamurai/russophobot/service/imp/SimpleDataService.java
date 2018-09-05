@@ -117,6 +117,7 @@ public class SimpleDataService implements IDataService {
 		}
 	}
 
+
 	@Override
 	public Subscriber getSubscriberById(int id) {
 		try {
