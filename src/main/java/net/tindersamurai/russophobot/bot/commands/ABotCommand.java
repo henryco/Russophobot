@@ -36,8 +36,8 @@ public abstract class ABotCommand implements IBotLogic {
 		return true;
 	}
 
-	protected final void setContextCommand(int id, String command) {
-		commandContext.setActualCommand(id, command);
+	protected final void setContextCommand(int id) {
+		commandContext.setActualCommand(id, getCommandName());
 	}
 
 	private boolean processContext(Update update, AbsSender sender) {

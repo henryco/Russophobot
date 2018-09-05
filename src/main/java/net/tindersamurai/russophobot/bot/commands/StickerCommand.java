@@ -41,14 +41,13 @@ public class StickerCommand extends ABotCommand {
 
 		val id = update.getMessage().getFrom().getId();
 		val chatId = update.getMessage().getChatId();
-		val command = update.getMessage().getText().substring(1);
 
 		if (!dataService.activeSubscriberExists(id)) {
 			sendMessage(new SendMessage(chatId, accessDeniedMsg), sender);
 			return;
 		}
 
-		setContextCommand(id, command);
+		setContextCommand(id);
 		sendMessage(new SendMessage(chatId, "Now send sticker please"), sender);
 	}
 

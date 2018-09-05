@@ -6,18 +6,14 @@ import net.tindersamurai.russophobot.mvc.data.entity.Mailer;
 import net.tindersamurai.russophobot.mvc.data.entity.Subscriber;
 import net.tindersamurai.russophobot.mvc.data.repository.MailersRepository;
 import net.tindersamurai.russophobot.mvc.data.repository.SubscriberRepository;
-import net.tindersamurai.russophobot.mvc.data.repository.TokenRepository;
 import net.tindersamurai.russophobot.service.IDataService;
 import net.tindersamurai.russophobot.service.ISubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
-@Service
-@Slf4j
+@Service @Slf4j
 public class SimpleDataService implements IDataService {
 
 	private final SubscriberRepository subscriberRepository;

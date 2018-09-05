@@ -47,13 +47,12 @@ public class AnonymousCommand  extends ABotCommand {
 	protected void onCommand(Update update, AbsSender sender) {
 		val id = update.getMessage().getFrom().getId();
 		val chatId = update.getMessage().getChatId();
-		val command = update.getMessage().getText().substring(1);
 
 		if (dataService.isMailerMuted(id)) {
 			return;
 		}
 
-		setContextCommand(id, command);
+		setContextCommand(id);
 		sendMessage(new SendMessage(chatId, commandMessage), sender);
 	}
 
