@@ -59,8 +59,9 @@ public class MainLogic implements IBotLogic {
 			log.error("Update processing error", e);
 			val trace = (ERROR_MSG + "\n\n" + e.toString()).substring(0, 4095);
 			sendMessage(new SendMessage(update.getMessage().getChatId(), trace), sender);
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
