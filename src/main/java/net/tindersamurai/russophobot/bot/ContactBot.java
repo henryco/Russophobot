@@ -29,7 +29,7 @@ public final class ContactBot extends TelegramLongPollingBot {
 	public void onUpdateReceived(Update update) {
 		log.debug("Update statement");
 		val status = mainBotLogic.process(update, this);
-		log.debug("Update ended with status: {}", status ? "OK" : "ABORTED");
+		log.debug("Update ended with status: {}", status ? "ENDED" : "INTERRUPTED");
 	}
 
 	@Override
