@@ -2,8 +2,7 @@ package net.tindersamurai.russophobot.bot;
 
 import lombok.extern.slf4j.Slf4j;
 import net.tindersamurai.russophobot.bot.commands.ABotCommand;
-import net.tindersamurai.russophobot.bot.event.events.MessageEvent;
-import net.tindersamurai.russophobot.bot.event.events.StartUpEvent;
+import net.tindersamurai.russophobot.bot.inline.ABotInlineProcessor;
 import net.tindersamurai.russophobot.bot.message.AMessageProcessor;
 import net.tindersamurai.russophobot.bot.reply.IBotReply;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,32 +19,43 @@ public class ContactBot extends TelegramLongPollingBot {
 	@Value("${token}") private String token;
 	@Value("${name}") private String name;
 
-	private final AMessageProcessor messageProcessor;
+	private final ABotInlineProcessor[] inlineProcessors;
+	private final AMessageProcessor[] messageProcessors;
 	private final ABotCommand[] commands;
 	private final IBotReply reply;
 
 	@Autowired
 	public ContactBot(
-			ApplicationEventPublisher publisher,
-			AMessageProcessor messageProcessor,
+			ABotInlineProcessor[] inlineProcessors,
+			AMessageProcessor[] messageProcessors,
 			ABotCommand[] commands,
 			IBotReply reply
 	) {
-		this.messageProcessor = messageProcessor;
+		this.inlineProcessors = inlineProcessors;
+		this.messageProcessors = messageProcessors;
 		this.commands = commands;
 		this.reply = reply;
 
-		publisher.publishEvent(new StartUpEvent(true));
+		log.debug("ContactBot initialized");
 	}
 
 	@Override
 	public void onUpdateReceived(Update update) {
 		log.debug("Update user: {}", update.getUpdateId());
-		if (!messageProcessor.process(update, this)) return;
-		if (!reply.process(update, this)) return;
-		for (ABotCommand command : commands) {
-			command.process(update, this);
-		}
+
+		if (!processLogic(update, inlineProcessors))
+			return;
+
+		if (!processLogic(update, commands))
+			return;
+
+		if (!processLogic(update, messageProcessors))
+			return;
+
+		if (!processLogic(update, reply))
+			return;
+
+		// TODO MORE OPTIONS
 	}
 
 	@Override
@@ -58,4 +68,11 @@ public class ContactBot extends TelegramLongPollingBot {
 		return token;
 	}
 
+	private boolean processLogic(Update update, IBotLogic ... array) {
+		for (IBotLogic logic : array) {
+			if (!logic.process(update, this))
+				return false;
+		}
+		return true;
+	}
 }

@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component @Slf4j
-@PropertySource(value = "classpath:/bot.properties", encoding = "UTF-8")
+@PropertySource(value = "classpath:/values.properties", encoding = "UTF-8")
 public class UnSubscribeCommand extends ABotCommand {
 
 	@Value("${subscription.un.ok}")

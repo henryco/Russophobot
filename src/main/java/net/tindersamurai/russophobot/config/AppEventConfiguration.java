@@ -15,7 +15,7 @@ public class AppEventConfiguration {
 	public ApplicationEventMulticaster applicationEventMulticaster() {
 		val eventMulticaster = new SimpleApplicationEventMulticaster(); {
 			eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-			eventMulticaster.setErrorHandler(TaskUtils.LOG_AND_SUPPRESS_ERROR_HANDLER);
+			eventMulticaster.setErrorHandler(TaskUtils.LOG_AND_PROPAGATE_ERROR_HANDLER);
 		}
 		return eventMulticaster;
 	}

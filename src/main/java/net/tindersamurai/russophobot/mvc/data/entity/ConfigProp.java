@@ -10,36 +10,22 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity @Data @NoArgsConstructor
+@Entity @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "subscribers")
+@Table(name = "configurations")
 @Proxy(lazy=false)
-public class Subscriber {
+public class ConfigProp {
 
 	private @Id @Column(
 			name = "id",
-			nullable = false,
-			updatable = false,
-			unique = true
-	) int id;
-
-
-	private @Column(
-			name = "chat",
-			nullable = false,
-			unique = true
-	) long chatId;
-
-
-	private @Column(
-			name = "username",
-			unique = true
-	) String username;
-
-
-	private @Column(
-			name = "active",
+			unique = true,
 			nullable = false
-	) boolean active;
+	) String id;
+
+
+	private @Column(
+			name = "prop"
+	) String value;
 
 }

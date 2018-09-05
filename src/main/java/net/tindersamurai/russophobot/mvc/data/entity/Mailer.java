@@ -10,11 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity @Data @NoArgsConstructor
+@Entity @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "subscribers")
+@Table(name = "mailers")
 @Proxy(lazy=false)
-public class Subscriber {
+public class Mailer {
 
 	private @Id @Column(
 			name = "id",
@@ -32,14 +33,14 @@ public class Subscriber {
 
 
 	private @Column(
-			name = "username",
-			unique = true
-	) String username;
+			name = "muted",
+			nullable = false
+	) boolean muted;
 
 
 	private @Column(
-			name = "active",
-			nullable = false
-	) boolean active;
+			name = "username",
+			unique = true
+	) String username;
 
 }
