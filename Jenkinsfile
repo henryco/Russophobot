@@ -19,7 +19,7 @@ pipeline {
 
     stage('Test') {
       steps {
-        sh '(cd build/test-results/ && touch *.xml) || true'
+        sh './gradlew clean'
         sh './gradlew test --stacktrace'
       }
     }
@@ -64,7 +64,7 @@ pipeline {
 
       sh '(pkill -f gradle) || true'
 
-      junit 'build/test-results/**/*.xml'
+      junit 'build/test-results/*.xml'
       sh 'rm -f -r test-arch'
       sh 'mkdir test-arch'
       sh 'zip -r test-arch/test-report.zip build/reports'
