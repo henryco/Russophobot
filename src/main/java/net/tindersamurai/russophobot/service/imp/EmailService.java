@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@Component @Slf4j @PropertySource(value="classpath:bot.properties", encoding = "UTF-8")
+@Service @Slf4j @PropertySource(value="classpath:/bot.properties", encoding = "UTF-8")
 public class EmailService implements IEmailService {
 
 	private final JavaMailSender mailSender;
@@ -20,7 +20,7 @@ public class EmailService implements IEmailService {
 	@Value("${confirm.address}")
 	private String botMailAddress;
 
-	@Value("${сonfirm.email}")
+	@Value("${confirm.email}")
 	private String adminMail;
 
 	@Autowired

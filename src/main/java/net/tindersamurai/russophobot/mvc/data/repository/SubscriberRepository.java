@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface SubscriberRepository extends JpaRepository<Subscriber, String> {
+public interface SubscriberRepository extends JpaRepository<Subscriber, Integer> {
 	List<Subscriber> getAllByActiveTrue();
+	boolean existsByIdAndActiveTrue(int id);
 }

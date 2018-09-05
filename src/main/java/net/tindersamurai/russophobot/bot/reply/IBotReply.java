@@ -7,9 +7,9 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 public interface IBotReply extends IBotLogic {
 
 	@Override
-	default void process(Update update, AbsSender sender) {
-		reply(update, sender);
+	default boolean process(Update update, AbsSender sender) {
+		return reply(update, sender);
 	}
 
-	void reply(Update update, AbsSender absSender);
+	boolean reply(Update update, AbsSender absSender);
 }
