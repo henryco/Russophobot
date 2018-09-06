@@ -30,6 +30,18 @@ public class AccessService implements IAccessService {
 	}
 
 	@Override
+	public boolean subscriberExists(int id) {
+		log.debug("subscriberExists: {}", id);
+		return subscriberRepository.existsById(id);
+	}
+
+	@Override
+	public boolean activeSubscriberExists(int id) {
+		log.debug("activeSubscriberExists: {}", id);
+		return subscriberRepository.existsByIdAndActiveTrue(id);
+	}
+
+	@Override
 	public Token generateAccessToken(int subscriberId) {
 		log.debug("Generate access token for: {}", subscriberId);
 

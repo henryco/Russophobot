@@ -6,4 +6,8 @@ public interface IAccessService {
 	Token generateAccessToken(int subscriberId);
 
 	Token findAccessTokenById(String token);
+
+	boolean activeSubscriberExists(int id);
+
+	boolean subscriberExists(int id);
 }
