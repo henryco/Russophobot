@@ -1,2 +1,2 @@
-# Russophobot
+# Russophobot [![Build Status](http://174.138.0.194:1997/buildStatus/icon?job=tinder-samurai/russophobot/release)](http://174.138.0.194:1997/job/tinder-samurai/job/russophobot/job/release/)
 #### Pretty smart universal bot for Telegram based on Spring-Boot.
