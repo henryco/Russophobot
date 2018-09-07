@@ -55,10 +55,6 @@ sudo ./install-postgres.sh
 sudo ./gen-sql.sh $user $pass
 sudo psql -U $user -a -f install-db.sql
 
-# install properties
-sudo ./gen-bot.sh $bot_token $bot_name $server_url $email
-sudo ./gen-app.sh $app_email $app_email_pass $user $pass
-
 
 # install redis
 sudo ./install-redis.sh
@@ -66,6 +62,11 @@ sudo ./install-redis.sh
 
 # move to project root
 cd $curr_dir
+
+
+# install properties
+sudo install/./gen-bot.sh $bot_token $bot_name $server_url $email
+sudo install/./gen-app.sh $app_email $app_email_pass $user $pass
 
 
 # build application
