@@ -5,10 +5,6 @@
 curr_dir=$(pwd)
 
 
-# grant permissions
-sudo chmod a+x *.sh
-
-
 # ====================== input =======================
 echo "Input db username..."
 read user
@@ -41,6 +37,10 @@ read destination
 	
 # move to install folder	
 cd install	
+
+
+# grant permissions
+sudo chmod a+x *.sh
 
 
 # install java 8
