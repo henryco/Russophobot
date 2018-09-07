@@ -70,7 +70,7 @@ sudo install/./gen-app.sh $app_email $app_email_pass $user $pass
 
 
 # build application
-./gradlew build --stacktrace
+./gradlew build -x test --stacktrace
 (pkill -f gradle) || true
 
 
