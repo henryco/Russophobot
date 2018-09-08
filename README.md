@@ -6,7 +6,7 @@
 * Move to project root
 * Run `install_u16.sh` on Ubuntu16
 * Run `install_u18.sh` on Ubuntu18
-* Move to $HOME/Russophobot
+* Move to `$HOME/Russophobot`
 * Run `start.sh`
 
 ### Note
