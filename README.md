@@ -1,5 +1,6 @@
 # Russophobot [![Build Status](http://174.138.0.194:1997/buildStatus/icon?job=tinder-samurai/russophobot/master)](http://174.138.0.194:1997/job/tinder-samurai/job/russophobot/job/master/) [![GitHub license](https://img.shields.io/badge/license-MIT-red.svg)](https://raw.githubusercontent.com/henryco/Russophobot/master/LICENSE)
 #### Pretty smart universal bot for Telegram based on Spring-Boot.
+&nbsp;
 
 ## List of available commads
 
@@ -16,10 +17,12 @@
 | **list** | List of all subscribers and mailers |
 
 Subscibers also can reply to non-anonymous messages.
+&nbsp;
 
 ## Rest API
 Yeah, bot has a small rest api, you can analyze package
 `net.tindersamurai.russophobot.mvc.controller` for more info.
+&nbsp;
 
 ## Installation
 * Clone or download repo
