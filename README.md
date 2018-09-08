@@ -1,6 +1,5 @@
 # Russophobot [![Build Status](http://174.138.0.194:1997/buildStatus/icon?job=tinder-samurai/russophobot/master)](http://174.138.0.194:1997/job/tinder-samurai/job/russophobot/job/master/) [![GitHub license](https://img.shields.io/badge/license-MIT-red.svg)](https://raw.githubusercontent.com/henryco/Russophobot/master/LICENSE)
 #### Pretty smart universal bot for Telegram based on Spring-Boot.
-&nbsp;
 
 ## List of available commads
 
