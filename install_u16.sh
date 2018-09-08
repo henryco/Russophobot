@@ -65,7 +65,7 @@ sudo ./install-postgres.sh
 
 # install database
 sudo ./gen-sql.sh $user $pass
-sudo psql -U $user -a -f install-db.sql
+sudo -u postgres psql -a -f install-db.sql
 
 
 # install redis
