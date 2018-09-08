@@ -87,6 +87,7 @@ sudo install/./gen-app.sh $app_email $app_email_pass $user $pass $server_port $a
 
 
 # deploy apllication
+mkdir $HOME/Russophobot/
 cp build/libs/russophobot-0.0.1-SNAPSHOT.jar "$HOME/Russophobot/"russophobot.jar
 cp install/start.sh "$HOME/Russophobot/"start.sh
 cd $HOME/Russophobot
