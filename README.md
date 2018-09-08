@@ -3,16 +3,19 @@
 
 ## List of available commads
 
-| -- | -- |
-| anon | Send anonymous message |
-| subscribe | Start subscription process |
-| unsubscribe | Yeah. unsubscribe |
-| ping | Test bot status |
-| token | Generate access token |
-| mute | Mute/Unmute, use with replies! |
-| sticker | Set start dialog sticker |
-| notify | Send message to all mailers |
-| list | List of all subscribers and mailers |
+| Command | Description |
+| --- | --- |
+| **anon** | Send anonymous message |
+| **subscribe** | Start subscription process |
+| **unsubscribe** | Yeah. unsubscribe |
+| **ping** | Test bot status |
+| **token** | Generate access token |
+| **mute** | Mute/Unmute, use it with replies! |
+| **sticker** | Set start dialog sticker |
+| **notify** | Send message to all mailers |
+| **list** | List of all subscribers and mailers |
+
+Subscibers also can reply to non-anonymous messages.
 
 ## Rest API
 Yeah, bot has a small rest api, you can analyze package
