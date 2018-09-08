@@ -17,11 +17,13 @@
 | **list** | List of all subscribers and mailers |
 
 Subscibers also can reply to non-anonymous messages.
+
 &nbsp;
 
 ## Rest API
 Yeah, bot has a small rest api, you can analyze package
 `net.tindersamurai.russophobot.mvc.controller` for more info.
+
 &nbsp;
 
 ## Installation
