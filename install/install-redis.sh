@@ -12,7 +12,7 @@ cd redis-stable
 
 # Build and Install Redis
 make
-make test
+# make test
 make install
 
 # Configure Redis
