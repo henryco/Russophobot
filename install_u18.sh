@@ -18,8 +18,11 @@ read bot_name
 echo "Input bot token..."
 read bot_token
 
-echo "Input server url..."
+echo "Input server url (e.g 127.0.0.1:1970)..."
 read server_url
+
+echo "Input server port (e.g 1970)..."
+read server_port
 
 echo "Input email (should be valid and actual!)..."
 read email
@@ -30,8 +33,17 @@ read app_email
 echo "Input application email password..."
 read app_email_pass	
 
-echo "Input output destination..."
-read destination
+echo "Input mail host (type smtp.gmail.com for Gmail)..."
+read app_email_host
+
+echo "Input email port (type 587 for Gmail)..."
+read app_email_port
+
+echo "Input secret question..."
+read question
+
+echo "Input secret answer..."
+read answer
 # ====================== input =======================
 	
 	
@@ -53,11 +65,11 @@ sudo ./install-postgres.sh
 
 # install database
 sudo ./gen-sql.sh $user $pass
-sudo psql -U $user -a -f install-db.sql
+sudo -u postgres psql -a -f install-db.sql
 
 
 # install redis
-sudo ./install-redis.sh
+sudo ./install-redis_u18.sh
 
 
 # move to project root
@@ -65,8 +77,8 @@ cd $curr_dir
 
 
 # install properties
-sudo install/./gen-bot.sh $bot_token $bot_name $server_url $email
-sudo install/./gen-app.sh $app_email $app_email_pass $user $pass
+sudo install/./gen-bot.sh $bot_token $bot_name $server_url $email $question $answer
+sudo install/./gen-app.sh $app_email $app_email_pass $user $pass $server_port $app_email_host $app_email_port
 
 
 # build application
@@ -75,9 +87,10 @@ sudo install/./gen-app.sh $app_email $app_email_pass $user $pass
 
 
 # deploy apllication
-cp build/libs/russophobot-0.0.1-SNAPSHOT.jar "$destination/"russophobot.jar
-cp install/start.sh "$destination/"start.sh
-cd $destination
+mkdir $HOME/Russophobot/
+cp build/libs/russophobot-0.0.1-SNAPSHOT.jar "$HOME/Russophobot/"russophobot.jar
+cp install/start.sh "$HOME/Russophobot/"start.sh
+cd $HOME/Russophobot
 
 
 echo "Application installed"
